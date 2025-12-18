@@ -1,0 +1,188 @@
+THUAT TOAN: Phuong phap Newton (Newton's Method for Optimization)
+DO PHUC TAP: O(k * n^3) voi k la so vong lap, n la chieu cua bien (n^3 tu viec giai he phuong trinh tuyen tinh)
+
+PSEUDO CODE:
+function newtonMethod(x0, epsilon, maxIter):
+    // x0: diem khoi dau
+    // epsilon: sai so hoi tu
+    
+    x = x0
+    
+    for iter = 0 to maxIter:
+        // Tinh gradient (dao ham bac 1)
+        grad = gradient_f(x)
+        
+        // Kiem tra hoi tu
+        normGrad = ||grad||
+        if normGrad < epsilon:
+            break
+        
+        // Tinh Hessian (dao ham bac 2)
+        H = hessian_f(x)
+        
+        // Giai he phuong trinh: H * p = -grad
+        // p la huong di (Newton direction)
+        p = solve(H, -grad)
+        
+        // Line search backtracking
+        alpha = 1.0
+        f_old = f(x)
+        
+        for ls = 0 to 20:
+            x_new = x + alpha * p
+            f_new = f(x_new)
+            
+            if f_new < f_old:
+                x = x_new
+                break
+            
+            alpha = alpha * 0.5
+    
+    return x
+
+
+function solve(A, b):
+    // Giai he phuong trinh tuyen tinh A*x = b
+    // Su dung Gaussian elimination
+    
+    n = size(A)
+    augmented = [A | b]
+    
+    // Khu Gauss (Forward elimination)
+    for i = 0 to n-1:
+        // Chon pivot
+        maxRow = i
+        for k = i+1 to n-1:
+            if |augmented[k][i]| > |augmented[maxRow][i]|:
+                maxRow = k
+        swap(augmented[i], augmented[maxRow])
+        
+        // Kiem tra singular
+        if |augmented[i][i]| < 1e-12:
+            augmented[i][i] = 1e-12
+        
+        // Khu xuong
+        for k = i+1 to n-1:
+            factor = augmented[k][i] / augmented[i][i]
+            for j = i to n:
+                augmented[k][j] = augmented[k][j] - factor * augmented[i][j]
+    
+    // Thay nguoc (Back substitution)
+    x = vector(n)
+    for i = n-1 down to 0:
+        x[i] = augmented[i][n]
+        for j = i+1 to n-1:
+            x[i] = x[i] - augmented[i][j] * x[j]
+        x[i] = x[i] / augmented[i][i]
+    
+    return x
+
+
+function hessian_f(x):
+    // Tinh ma tran Hessian (dao ham bac 2)
+    // H[i][j] = d^2f / (dx_i * dx_j)
+    
+    n = length(x)
+    H = matrix(n, n)
+    
+    for i = 0 to n-1:
+        for j = 0 to n-1:
+            H[i][j] = secondDerivative(f, x, i, j)
+    
+    return H
+
+
+// Cong thuc Newton:
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Thuật toán Newton (Phương pháp Newton-Raphson):
+- Phương pháp tối ưu bậc hai (second-order)
+- Sử dụng thông tin đạo hàm bậc 2 (Hessian)
+
+Ý tưởng:
+- Xấp xỉ bậc hai (quadratic approximation)
+- Tại mỗi điểm, xấp xỉ hàm bằng parabol
+- Nhảy thẳng tới đỉnh parabol (cực tiểu xấp xỉ)
+
+Thuật toán:
+
+Bước 1: Khởi tạo
+- Điểm xuất phát x₀
+- Ngưỡng hội tụ ε
+
+Bước 2: Lặp cho đến hội tụ:
+- Tính gradient: g = ∇f(xₖ)
+- Tính ma trận Hessian: H = ∇²f(xₖ)
+- Giải hệ: H × d = -g (tìm hướng Newton d)
+- Cập nhật: xₖ₊₁ = xₖ + d
+- Kiểm tra: ||g|| < ε hoặc ||d|| < ε
+
+Giải thích:
+
+1. Gradient ∇f: Hướng dốc nhất (bậc 1)
+2. Hessian ∇²f: Độ cong của hàm (bậc 2)
+   - Phần tử H[i][j] = ∂²f/(∂xᵢ∂xⱼ)
+   - Ma trận đối xứng n×n
+3. Hướng Newton d:
+   - H × d = -g
+   - Dừng Cholesky hoặc LU để giải
+
+Phân tích hội tụ:
+
+Gần cực tiểu:
+- Nếu H xác định dương (hàm lồi)
+- Hội tụ bậc 2 (quadratic convergence)
+- Số chữ số chính xác gấp đôi mỗi vòng
+
+Xa cực tiểu:
+- Có thể phân kỳ
+- Cần line search (tìm bước nhảy tối ưu)
+
+Cải tiến - Line Search:
+- Thay vì xₖ₊₁ = xₖ + d
+- Dùng xₖ₊₁ = xₖ + α × d
+- Tìm α để f(xₖ + αd) nhỏ nhất
+
+Các biến thể:
+
+1. Quasi-Newton (BFGS, L-BFGS):
+   - Xấp xỉ H thay vì tính chính xác
+   - Tiết kiệm tính toán
+
+2. Gauss-Newton:
+   - Đặc biệt cho bài toán bình phương tối thiểu
+
+3. Levenberg-Marquardt:
+   - Kết hợp Newton và Gradient Descent
+   - H + μI thay vì H
+
+So sánh với Gradient Descent:
+
+| Tính chất        | GD           | Newton       |
+|------------------|--------------|---------------|
+| Mỗi vòng        | O(n)         | O(n³)        |
+| Hội tụ          | Tuyến tính   | Bậc hai       |
+| Bộ nhớ          | Thấp         | Cao (ma trận)|
+| Tổng vòng lặp  | Nhiều        | Ít            |
+
+Ưu điểm:
+- Hội tụ rất nhanh gần cực tiểu
+- Không cần điều chỉnh learning rate
+- Chính xác cao
+
+Nhược điểm:
+- Tốn kém tính toán (O(n³) cho Hessian)
+- Tốn bộ nhớ (ma trận n×n)
+- Có thể phân kỳ nếu Hessian suy biến
+- Không đảm bảo giảm f nếu không dùng line search
+
+Ứng dụng:
+- Tối ưu quy mô nhỏ-trung bình
+- Logistic Regression
+- Neural network (second-order methods)
+- Nonlinear least squares
+// x_{k+1} = x_k - H^(-1) * gradient
+// 
+// Uu diem: Hoi tu nhanh (quadratic convergence)
+// Nhuoc diem: Tinh toan Hessian dat, can giai he phuong trinh

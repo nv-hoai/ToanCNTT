@@ -1,0 +1,157 @@
+THUAT TOAN: Bao loi (Andrew's Monotone Chain - Convex Hull)
+DO PHUC TAP: O(n * log(n))
+
+PSEUDO CODE:
+function andrewConvexHull(points):
+    n = length(points)
+    if n <= 1:
+        return points
+    
+    sort(points)
+    
+    lower = []
+    for i = 0 to n-1:
+        while length(lower) >= 2 and 
+              crossProduct(lower[length-2], lower[length-1], points[i]) <= 0:
+            lower.pop()
+        lower.append(points[i])
+    
+    upper = []
+    for i = n-1 down to 0:
+        while length(upper) >= 2 and 
+              crossProduct(upper[length-2], upper[length-1], points[i]) <= 0:
+            upper.pop()
+        upper.append(points[i])
+    
+    lower.pop()
+    upper.pop()
+    
+    hull = lower + upper
+    return hull
+
+
+THUAT TOAN: Tinh dien tich bao loi (Shoelace Formula)
+DO PHUC TAP: O(n)
+
+PSEUDO CODE:
+function calculateArea(hull):
+    n = length(hull)
+    area = 0
+    for i = 0 to n-1:
+        j = (i + 1) % n
+        area = area + hull[i].x * hull[j].y - hull[j].x * hull[i].y
+    return |area| / 2
+
+
+THUAT TOAN: Tim canh ngan nhat
+DO PHUC TAP: O(n)
+
+PSEUDO CODE:
+function findShortestEdge(hull):
+    minEdge = infinity
+    for i = 0 to n-1:
+        j = (i + 1) % n
+        minEdge = min(minEdge, distance(hull[i], hull[j]))
+    return minEdge
+
+
+THUAT TOAN: Tim cap diem gan nhat (Closest Pair - Divide and Conquer)
+DO PHUC TAP: O(n * log(n))
+
+PSEUDO CODE:
+function closestPair(px, py, n):
+    if n <= 3:
+        return bruteForce(px, n)
+    
+    mid = n / 2
+    midPoint = px[mid]
+    
+    pyl = [p in py if p.x <= midPoint.x]
+    pyr = [p in py if p.x > midPoint.x]
+    
+    dl = closestPair(px[0..mid], pyl, mid)
+    dr = closestPair(px[mid..n], pyr, n-mid)
+    
+    d = min(dl, dr)
+    
+    strip = [p in py if |p.x - midPoint.x| < d]
+    
+    for i = 0 to length(strip)-1:
+        j = i + 1
+        while j < length(strip) and (strip[j].y - strip[i].y) < d:
+            d = min(d, distance(strip[i], strip[j]))
+            j = j + 1
+    
+    return d
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Bài toán hình học tính toán (Computational Geometry):
+
+Thuật toán 1: Bao lồi (Convex Hull) - Graham Scan
+- Mục đích: Tìm đa giác lồi nhỏ nhất bao quanh tất cả các điểm
+- Hình dung: Giống như kéo dây chuòng thắng quanh các cọc
+
+Các bước:
+
+Bước 1: Tìm điểm mốc
+- Tìm điểm thấp nhất (y nhỏ nhất, nếu bằng nhau thì x nhỏ nhất)
+- Điểm này chắc chắn thuộc bao lồi
+
+Bước 2: Sắp xếp các điểm theo góc cực
+- Tính góc cực từ điểm mốc đến mỗi điểm khác
+- Sắp xếp theo góc tăng dần (ngược chiều kim đồng hồ)
+
+Bước 3: Xây dựng bao lồi bằng stack
+- Duyệt qua các điểm theo thứ tự đã sắp
+- Với mỗi điểm mới:
+  * Kiểm tra xem nó rẽ trái hay phải so với 2 điểm cuối trong stack
+  * Nếu rẽ phải (không lồi) → loại điểm cuối khỏi stack
+  * Tiếp tục kiểm tra cho đến khi được rẽ trái
+  * Thêm điểm mới vào stack
+
+Kiểm tra rẽ trái/phải bằng tích chéo (cross product):
+- Vector AB = (B.x - A.x, B.y - A.y)
+- Vector AC = (C.x - A.x, C.y - A.y)
+- Cross = AB.x × AC.y - AB.y × AC.x
+- Nếu cross > 0: C ở bên trái AB (rẽ trái)
+- Nếu cross < 0: C ở bên phải AB (rẽ phải)
+
+Thuật toán 2: Diện tích bao lồi - Công thức dây giày (Shoelace Formula)
+- Tính diện tích đa giác khi biết toạ độ các đỉnh
+- Area = 1/2 |Σ(xᵢ × yᵢ₊₁ - xᵢ₊₁ × yᵢ)|
+- Hình dung: Cắt đa giác thành các tam giác từ gốc tọa độ
+
+Thuật toán 3: Chu vi bao lồi
+- Tính tổng khoảng cách các cạnh liên tiếp
+- Perimeter = Σ √((xᵢ₊₁ - xᵢ)² + (yᵢ₊₁ - yᵢ)²)
+
+Thuật toán 4: Cặp điểm gần nhất - Chia để trị (Divide and Conquer)
+- Tìm 2 điểm có khoảng cách nhỏ nhất
+
+Các bước:
+
+Bước 1: Sắp xếp
+- Sắp theo x (px) và theo y (py)
+
+Bước 2: Chia nhỏ (n ≤ 3 điểm)
+- Tính trực tiếp bằng brute force
+
+Bước 3: Chia lớn (n > 3)
+- Chia tập điểm thành 2 nửa theo toạ độ x
+- Đệ quy tìm d₁ (khoảng cách nhỏ nhất bên trái)
+- Đệ quy tìm d₂ (khoảng cách nhỏ nhất bên phải)
+- d = min(d₁, d₂)
+
+Bước 4: Trộn kết quả (strip check)
+- Vấn đề: Cặp gần nhất có thể nằm ngang ranh giới
+- Chỉ cần kiểm tra điểm trong dải strip rộng 2d quanh ranh giới
+- Kiểm tra mỗi điểm với 7 điểm kế tiếp (chứng minh toán học)
+
+Tối ưu hoá: Độ phức tạp O(n log n) thay vì O(n²) brute force
+
+Ứng dụng:
+- Xử lý ảnh, nhận dạng mẫu
+- GIS, bản đồ
+- Thiết kế mạch, robotics
+- Phân cụm dữ liệu

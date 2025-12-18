@@ -1,0 +1,36 @@
+THUAT TOAN: Tim tich cac uoc so cua n
+DO PHUC TAP: O(sqrt(n))
+
+PSEUDO CODE:
+function productOfDivisors(n):
+    count = countDivisors(n)
+    product = n^(count / 2)
+    return product
+
+function countDivisors(n):
+    count = 0
+    for i = 1 to sqrt(n):
+        if n % i == 0:
+            if i * i == n:
+                count = count + 1
+            else:
+                count = count + 2
+    return count
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Tính tích các ước số của n:
+- Ý tưởng: Tích các ước số = n^(số_ước_số / 2)
+- Ví dụ: n=6 có ước là {1,2,3,6}, tích = 1×2×3×6 = 36 = 6^(4/2) = 6^2
+- Giải thích công thức:
+  * Các ước số luôn xuất hiện theo cặp: nếu i là ước thì n/i cũng là ước
+  * Tích mỗi cặp = i × (n/i) = n
+  * Nếu có k ước số thì có k/2 cặp
+  * Tích tất cả = n^(k/2)
+
+Đếm số ước số:
+- Duyệt các số từ 1 đến căn n
+- Với mỗi số i là ước số:
+  * Nếu i² = n (i là căn bậc hai đúng): đếm 1 ước
+  * Nếu i² < n: đếm 2 ước (i và n/i)
+- Tổng số ước tìm được chính là số lượng ước số của n

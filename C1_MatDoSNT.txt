@@ -1,0 +1,43 @@
+THUAT TOAN: Tinh mat do so nguyen to (Prime Density Calculation)
+DO PHUC TAP: O(n * log(log(n)))
+
+PSEUDO CODE:
+function sieveOfEratosthenes(n):
+    isPrime = array[0..n] filled with true
+    isPrime[0] = false
+    isPrime[1] = false
+    
+    for p = 2 to sqrt(n):
+        if isPrime[p] == true:
+            for i = p*p to n step p:
+                isPrime[i] = false
+    
+    count = 0
+    for i = 2 to n:
+        if isPrime[i]:
+            count = count + 1
+    
+    return count
+
+function primeDensity(n):
+    primeCount = sieveOfEratosthenes(n)
+    density = primeCount / n
+    return density
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Tính mật độ số nguyên tố:
+- Mật độ số nguyên tố = (Số lượng SNT từ 2 đến n) / n
+- Cách tính:
+  * Bước 1: Sử dụng Sàng Eratosthenes để đánh dấu tất cả số nguyên tố từ 2 đến n
+  * Bước 2: Đếm có bao nhiêu số được đánh dấu là nguyên tố
+  * Bước 3: Chia số lượng cho n để được mật độ
+
+Ý nghĩa của mật độ:
+- Mật độ cao nghĩa là có nhiều số nguyên tố trong khoảng đó
+- Theo định lý số nguyên tố: khi n càng lớn, mật độ xấp xỉ 1/ln(n)
+- Ví dụ: 
+  * Đến n=100: có 25 SNT → mật độ = 0.25 (25%)
+  * Đến n=1000: có 168 SNT → mật độ = 0.168 (16.8%)
+  * Đến n=10000: có 1229 SNT → mật độ = 0.1229 (12.29%)
+- Mật độ giảm dần khi n tăng, nhưng tổng số SNT vẫn tăng lên

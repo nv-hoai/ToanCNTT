@@ -1,0 +1,165 @@
+THUAT TOAN: Bao loi (Andrew's Monotone Chain)
+DO PHUC TAP: O(n * log(n))
+
+PSEUDO CODE:
+function andrewConvexHull(points):
+    n = length(points)
+    if n <= 1:
+        return points
+    
+    sort(points)
+    
+    lower = []
+    for i = 0 to n-1:
+        while length(lower) >= 2 and 
+              crossProduct(lower[length-2], lower[length-1], points[i]) <= 0:
+            lower.pop()
+        lower.append(points[i])
+    
+    upper = []
+    for i = n-1 down to 0:
+        while length(upper) >= 2 and 
+              crossProduct(upper[length-2], upper[length-1], points[i]) <= 0:
+            upper.pop()
+        upper.append(points[i])
+    
+    lower.pop()
+    upper.pop()
+    
+    return lower + upper
+
+
+THUAT TOAN: Tinh dien tich (Shoelace Formula)
+DO PHUC TAP: O(n)
+
+PSEUDO CODE:
+function calculateArea(hull):
+    area = 0
+    for i = 0 to n-1:
+        j = (i + 1) % n
+        area = area + hull[i].x * hull[j].y - hull[j].x * hull[i].y
+    return |area| / 2
+
+
+THUAT TOAN: Tim canh ngan nhat
+DO PHUC TAP: O(n)
+
+PSEUDO CODE:
+function findShortestEdge(hull):
+    minEdge = infinity
+    for i = 0 to n-1:
+        minEdge = min(minEdge, distance(hull[i], hull[(i+1)%n]))
+    return minEdge
+
+
+THUAT TOAN: Closest Pair (Divide and Conquer)
+DO PHUC TAP: O(n * log(n))
+
+PSEUDO CODE:
+function closestPair(px, py, n):
+    if n <= 3:
+        return bruteForce(px)
+    
+    mid = n / 2
+    dl = closestPair(px[0..mid], pyl, mid)
+    dr = closestPair(px[mid..n], pyr, n-mid)
+    d = min(dl, dr)
+    
+    strip = [p in py if |p.x - midPoint.x| < d]
+    for i in strip:
+        for j in strip near i:
+            d = min(d, distance(i, j))
+    
+    return d
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Bài toán hình học phiên bản 2 (tối ưu hơn):
+
+Thuật toán 1: Bao lồi - Thuật toán Andrew (Andrew's Monotone Chain)
+- Một biến thể của Graham Scan, đơn giản hơn
+- Không cần tính góc cực
+
+Các bước:
+
+Bước 1: Sắp xếp
+- Sắp tất cả điểm theo (x, y)
+- Điểm trái nhất và phải nhất chắc chắn thuộc bao lồi
+
+Bước 2: Xây dựng nửa dưới (lower hull)
+- Duyệt từ trái sang phải
+- Duy trì chuỗi điểm luôn rẽ trái
+- Loại bỏ điểm không lồi (rẽ phải)
+
+Bước 3: Xây dựng nửa trên (upper hull)
+- Duyệt từ phải sang trái (ngược lại)
+- Tương tự như nửa dưới
+
+Bước 4: Kết hợp
+- Bao lồi = lower + upper
+- Loại bỏ điểm trùng (giữ đầu và cuối)
+
+Ưu điểm so với Graham Scan:
+- Không cần tính góc (tránh số thực, chính xác hơn)
+- Dễ hiểu và cài đặt hơn
+- Ổn định số tốt hơn
+
+Thuật toán 2: Diện tích bao lồi - Công thức dây giày (Shoelace Formula)
+- Tính diện tích đa giác khi biết tọa độ các đỉnh
+- Area = 1/2 |Σ(xᵢ × yᵢ₊₁ - xᵢ₊₁ × yᵢ)|
+- Hình dung: Cắt đa giác thành các tam giác từ gốc tọa độ
+- Độ phức tạp: O(n)
+
+Thuật toán 3: Chu vi bao lồi
+- Tính tổng khoảng cách các cạnh liên tiếp
+- Perimeter = Σ √((xᵢ₊₁ - xᵢ)² + (yᵢ₊₁ - yᵢ)²)
+- Duyệt qua tất cả các đỉnh, tính khoảng cách đến đỉnh kế tiếp
+- Độ phức tạp: O(n)
+
+Thuật toán 4: Cặp điểm gần nhất - Chia để trị tối ưu
+
+Các bước:
+
+Bước 1: Sắp xếp dữ liệu
+- Sắp tập điểm theo x tạo px
+- Sắp tập điểm theo y tạo py
+- Cả hai danh sách này được truyền qua các lần đệ quy
+
+Bước 2: Trường hợp cơ sở (n ≤ 3 điểm)
+- Tính trực tiếp bằng brute force
+- Kiểm tra tất cả các cặp, chọn cặp gần nhất
+
+Bước 3: Chia đôi tập điểm
+- Tìm điểm giữa (midPoint) theo tọa độ x
+- Chia px thành px_left và px_right
+- Chia py thành py_left (x ≤ midPoint.x) và py_right (x > midPoint.x)
+- Đệ quy: d₁ = closestPair(px_left, py_left)
+- Đệ quy: d₂ = closestPair(px_right, py_right)
+- Lấy d = min(d₁, d₂)
+
+Bước 4: Trộn kết quả tối ưu
+- Tạo strip: Các điểm cách ranh giới < d
+- Strip đã sắp theo y rồi
+- Với mỗi điểm, chỉ kiểm tra 7 điểm kế tiếp
+  * Do giới hạn hình học: Trong hộp 2d×d chỉ chứa được tối đa 8 điểm cách nhau ≥ d
+
+Giải thích 7 điểm:
+- Hộp rộng 2d, cao d chia thành 2 ô vuông d×d
+- Mỗi ô chứa tối đa 4 điểm (do d₁, d₂ ≥ d)
+- Với điểm thứ i, chỉ có tối đa 7 điểm kế tiếp trong vùng nguy hiểm
+
+Tối ưu hóa so với cách naive:
+- Cách naive: Kiểm tra tất cả cặp trong strip → có thể chậm
+- Cách tối ưu: Chỉ kiểm tra 7 điểm kế tiếp cho mỗi điểm → O(1) cho mỗi điểm
+- Kết quả: Độ phức tạp tổng thể là O(n log n)
+
+Tổng kết phương pháp Andrew's Monotone Chain:
+- Ưu điểm: Không cần tính góc cực, chỉ dùng tích chéo
+- Xử lý: Chính xác hơn do tránh phép toán số thực
+- Hiệu quả: Thường được dùng trong thực tế do độ ổn định cao
+
+Ứng dụng mở rộng:
+- Phân tích kỳ học (meteorology): Tìm vùng chịu ả nh hưởng
+- Thiết kế game: Phát hiện va chạm
+- Mạng cảm biến: Vùng phủ sóng
+- Machine Learning: Clustering, outlier detection

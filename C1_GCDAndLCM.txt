@@ -1,0 +1,43 @@
+THUAT TOAN: Uoc chung lon nhat (Euclidean Algorithm - GCD)
+DO PHUC TAP: O(log(min(a, b)))
+
+PSEUDO CODE:
+function gcd(a, b):
+    while b != 0:
+        temp = b
+        b = a % b
+        a = temp
+    return a
+
+
+THUAT TOAN: Boi chung nho nhat (LCM)
+DO PHUC TAP: O(log(min(a, b)))
+
+PSEUDO CODE:
+function lcm(a, b):
+    return (a * b) / gcd(a, b)
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+1. Ước chung lớn nhất (GCD - Greatest Common Divisor):
+   - Thuật toán Euclid là phương pháp hiệu quả nhất
+   - Ý tưởng: GCD(a, b) = GCD(b, a mod b)
+   - Cách thực hiện:
+     * Lặp lại việc chia lấy dư
+     * Mỗi bước: thay a bằng b, thay b bằng phần dư của a chia b
+     * Khi b = 0, dừng lại và a chính là GCD
+   - Ví dụ: GCD(48, 18)
+     * 48 mod 18 = 12 → GCD(18, 12)
+     * 18 mod 12 = 6 → GCD(12, 6)
+     * 12 mod 6 = 0 → GCD(6, 0) = 6
+
+2. Bội chung nhỏ nhất (LCM - Least Common Multiple):
+   - Công thức: LCM(a, b) = (a × b) / GCD(a, b)
+   - Giải thích:
+     * Tích a × b chứa tất cả các thừa số của cả a và b
+     * GCD chứa các thừa số chung
+     * Chia cho GCD để loại bỏ phần trùng lặp
+   - Ví dụ: LCM(12, 18)
+     * GCD(12, 18) = 6
+     * LCM = (12 × 18) / 6 = 216 / 6 = 36
+   - Lưu ý: Tính GCD trước, chia sau để tránh tràn số với số lớn

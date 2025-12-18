@@ -1,0 +1,27 @@
+THUAT TOAN: Tim tong cac uoc so cua n
+DO PHUC TAP: O(sqrt(n))
+
+PSEUDO CODE:
+function sumOfDivisors(n):
+    sum = 0
+    
+    for i = 1 to sqrt(n):
+        if n % i == 0:
+            sum = sum + i
+            if i != n / i:
+                sum = sum + n / i
+    
+    return sum
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Tính tổng các ước số của n:
+- Khởi tạo biến tổng bằng 0
+- Duyệt các số từ 1 đến căn bậc hai của n
+- Với mỗi số i, kiểm tra xem i có phải là ước của n không (n chia hết cho i)
+- Nếu i là ước số:
+  * Cộng i vào tổng
+  * Tính ước số đối ứng là n/i
+  * Nếu i khác n/i (tức không phải là căn bậc hai đúng của n), cũng cộng n/i vào tổng
+- Cách này tránh việc phải duyệt hết từ 1 đến n, chỉ cần duyệt đến căn n
+- Trả về tổng cuối cùng

@@ -1,0 +1,106 @@
+THUAT TOAN: Cheo hoa ma tran (Jacobi Diagonalization)
+DO PHUC TAP: O(n^3 * iterations)
+
+PSEUDO CODE:
+function jacobiDiagonalization(A):
+    // A: ma tran doi xung (n x n)
+    // Tra ve: P (eigenvectors), D (eigenvalues)
+    
+    n = size(A)
+    D = copy(A)
+    P = identity_matrix(n, n)
+    
+    maxIter = 50
+    epsilon = 1e-9
+    
+    for iter = 0 to maxIter:
+        // Tim phan tu off-diagonal lon nhat
+        maxOffDiag = 0
+        p = 0
+        q = 1
+        
+        for i = 0 to n-1:
+            for j = i+1 to n-1:
+                if |D[i][j]| > maxOffDiag:
+                    maxOffDiag = |D[i][j]|
+                    p = i
+                    q = j
+        
+        // Kiem tra hoi tu
+        if maxOffDiag < epsilon:
+            break
+        
+        // Tinh goc quay theta
+        if |D[p][p] - D[q][q]| < epsilon:
+            theta = PI / 4
+        else:
+            theta = 0.5 * atan(2 * D[p][q] / (D[p][p] - D[q][q]))
+        
+        c = cos(theta)
+        s = sin(theta)
+        
+        // Luu lai gia tri tam thoi
+        temp = copy(D)
+        
+        // Cap nhat D theo Givens rotation
+        for i = 0 to n-1:
+            if i != p and i != q:
+                D[i][p] = c * temp[i][p] + s * temp[i][q]
+                D[p][i] = D[i][p]
+                D[i][q] = -s * temp[i][p] + c * temp[i][q]
+                D[q][i] = D[i][q]
+        
+        D[p][p] = c*c*temp[p][p] + 2*c*s*temp[p][q] + s*s*temp[q][q]
+        D[q][q] = s*s*temp[p][p] - 2*c*s*temp[p][q] + c*c*temp[q][q]
+        D[p][q] = D[q][p] = 0
+        
+        // Cap nhat ma tran eigenvector P
+        for i = 0 to n-1:
+            temp_p = P[i][p]
+            temp_q = P[i][q]
+            P[i][p] = c * temp_p + s * temp_q
+            P[i][q] = -s * temp_p + c * temp_q
+    
+    return (P, D)
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Chéo hóa ma trận (Matrix Diagonalization):
+- Mục đích: Biểu diễn ma trận A dưới dạng A = P × D × P⁻¹
+- D là ma trận chéo chứa các trị riêng
+- P là ma trận có các cột là vector riêng
+
+Ý nghĩa hình học:
+- Chéo hóa là tìm hệ tọa độ mới mà trong đó phép biến đổi A chỉ là co giãn theo các trục
+- Vector riêng: Các hướng không bị xoay khi biến đổi
+- Trị riêng: Hệ số co giãn theo mỗi hướng
+
+Thuật toán:
+
+Bước 1: Tìm tất cả trị riêng (λ₁, λ₂, ..., λₙ)
+- Sử dụng phương pháp Jacobi (cho ma trận đối xứng)
+- Hoặc phương pháp QR (chính xác hơn)
+
+Bước 2: Với mỗi trị riêng λᵢ:
+- Giải hệ phương trình (A - λᵢI)v = 0
+- Tìm vector riêng vᵢ tương ứng
+- Chuẩn hóa: vᵢ = vᵢ / ||vᵢ||
+
+Bước 3: Xây dựng ma trận P và D
+- Cột thứ i của P = vector riêng thứ i
+- D[i][i] = trị riêng thứ i
+- Các phần tử ngoài đường chéo của D = 0
+
+Kiểm tra tính chéo hóa được:
+- Ma trận vuông n×n có n vector riêng độc lập tuyến tính
+- Ma trận đối xứng luôn chéo hóa được với P trực chuẩn
+
+Ứng dụng:
+- Tính lũy thừa ma trận: Aⁿ = P × Dⁿ × P⁻¹ (chỉ cần lũy thừa các số trên đường chéo)
+- Giải hệ phương trình vi phân
+- Phân tích dao động tự nhiên của hệ
+- Nén dữ liệu (chỉ giữ các thành phần quan trọng)
+
+Ví dụ trực quan:
+- Ma trận [[3, 1], [0, 2]] biến hình elip thành hình elip khác
+- Sau chéo hóa, trong hệ tọa độ mới, nó chỉ co giãn theo hai trục với hệ số λ₁ và λ₂

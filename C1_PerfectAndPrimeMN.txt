@@ -1,0 +1,57 @@
+THUAT TOAN: Kiem tra so nguyen to va so hoan hao trong doan [m, n]
+DO PHUC TAP: O((n - m) * sqrt(n))
+
+PSEUDO CODE:
+function isPrime(num):
+    if num < 2:
+        return false
+    if num == 2:
+        return true
+    if num % 2 == 0:
+        return false
+    for i = 3 to sqrt(num) step 2:
+        if num % i == 0:
+            return false
+    return true
+
+function isPerfect(num):
+    if num <= 1:
+        return false
+    sum = 1
+    for i = 2 to sqrt(num):
+        if num % i == 0:
+            sum = sum + i
+            if i != num / i:
+                sum = sum + num / i
+    return (sum == num)
+
+function findPrimesAndPerfects(m, n):
+    primes = []
+    perfects = []
+    
+    for num = m to n:
+        if isPrime(num):
+            primes.append(num)
+        if isPerfect(num):
+            perfects.append(num)
+    
+    return (primes, perfects)
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Tìm số nguyên tố và số hoàn hảo trong đoạn [m, n]:
+- Chuẩn bị hai danh sách: một cho số nguyên tố, một cho số hoàn hảo
+- Duyệt qua từng số trong khoảng từ m đến n
+- Với mỗi số:
+  * Kiểm tra xem có phải số nguyên tố không:
+    - Nếu đúng, thêm vào danh sách số nguyên tố
+  * Kiểm tra xem có phải số hoàn hảo không:
+    - Tính tổng các ước số thực sự
+    - Nếu tổng bằng chính số đó, thêm vào danh sách số hoàn hảo
+- Trả về cả hai danh sách
+
+Đặc điểm:
+- Một số có thể vừa là số nguyên tố vừa là số hoàn hảo (thực tế không có số nào như vậy)
+- Số nguyên tố: chỉ có đúng 2 ước là 1 và chính nó
+- Số hoàn hảo: tổng các ước thực sự bằng chính nó
+- Trong khoảng ngắn, thường có nhiều số nguyên tố hơn số hoàn hảo

@@ -1,0 +1,182 @@
+THUAT TOAN: Tinh trang thai sau n buoc (Markov Chain State Evolution)
+DO PHUC TAP: O(n * k^2) voi k la so trang thai, n la so buoc
+
+PSEUDO CODE:
+function computeStateAfterNSteps(p0, P, n):
+    // p0: vector xac suat ban dau (1 x k)
+    // P: ma tran chuyen trang thai (k x k)
+    // n: so buoc thoi gian
+    // Tra ve: p_n = p0 * P^n
+    
+    p = p0
+    
+    for i = 1 to n:
+        p = p * P
+    
+    return p
+
+
+THUAT TOAN: Tinh phan phoi dung (Steady State Distribution)
+DO PHUC TAP: O(k^2 * iterations)
+
+PSEUDO CODE:
+function computeSteadyState(P, epsilon, maxIter):
+    // P: ma tran chuyen trang thai (k x k)
+    // Tra ve: pi sao cho pi * P = pi
+    
+    k = size(P)
+    pi = [1/k, 1/k, ..., 1/k]  // Bat dau tu phan phoi deu
+    
+    for iter = 0 to maxIter:
+        pi_new = pi * P
+        
+        // Kiem tra hoi tu
+        if ||pi_new - pi|| < epsilon:
+            return pi_new
+        
+        pi = pi_new
+    
+    return pi
+
+
+THUAT TOAN: Kiem tra ma tran stochastic
+DO PHUC TAP: O(k^2)
+
+PSEUDO CODE:
+function isStochasticMatrix(P, epsilon):
+    // Kiem tra:
+    // 1. Tat ca phan tu >= 0
+    // 2. Tong moi hang = 1
+    
+    k = size(P)
+    
+    for i = 0 to k-1:
+        rowSum = 0
+        for j = 0 to k-1:
+            if P[i][j] < 0:
+                return false
+            rowSum = rowSum + P[i][j]
+        
+        if |rowSum - 1.0| > epsilon:
+            return false
+    
+    return true
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Chuỗi Markov (Markov Chain):
+- Mô hình xác suất mô tả chuỗi các sự kiện
+- Tính chất không nhớ: Tương lai chỉ phụ thuộc hiện tại, không phụ thuộc quá khứ
+
+Khái niệm cơ bản:
+- Trạng thái (state): Các tình huống có thể xảy ra
+- Ma trận chuyển P: P[i][j] = xác suất chuyển từ trạng thái i sang j
+- Phân phối xác suất π: π[i] = xác suất ở trạng thái i
+
+Thuật toán 1: Tính phân phối sau k bước
+- Cho phân phối ban đầu π₀
+- Sau k bước: πₖ = π₀ × Pᵏ
+- Cách tính: Nhân ma trận lặp lại k lần
+
+Ví dụ:
+- Thời tiết: {Nắng, Mưa}
+- P = [[0.7, 0.3],    // Nắng → Nắng (70%), Nắng → Mưa (30%)
+       [0.4, 0.6]]    // Mưa → Nắng (40%), Mưa → Mưa (60%)
+- Hôm nay nắng: π₀ = [1, 0]
+- Ngày mai: π₁ = π₀ × P = [0.7, 0.3]
+
+Thuật toán 2: Tìm phân phối dừng (stationary distribution)
+- Định nghĩa: π × P = π (không thay đổi qua thời gian)
+- Phương pháp Power Iteration:
+  * Bắt đầu với π₀ bất kỳ (thường [1/n, 1/n, ..., 1/n])
+  * Lặp: πₖ₊₁ = πₖ × P
+  * Dừng khi ||πₖ₊₁ - πₖ|| < ε
+
+Ý nghĩa phân phối dừng:
+- Xác suất "cân bằng" lâu dài
+- Sau thời gian đủ lâu, hệ thống ổn định
+- Không phụ thuộc trạng thái ban đầu (với chuỗi ergodic)
+
+Điều kiện hội tụ:
+1. Irreducible: Đi được từ mọi trạng thái đến mọi trạng thái
+2. Aperiodic: Không có chu kỳ cố định
+3. Thường gọp nhất: Ma trận P chính quy (positive regular)
+
+Thuật toán 3: Kiểm tra ma trận chuyển hợp lệ
+- Mỗi phần tử: 0 ≤ P[i][j] ≤ 1
+- Mỗi hàng tổng = 1: Σⱼ P[i][j] = 1
+- Đây là ma trận ngẫu nhiên (stochastic matrix)
+
+Tính chất quan trọng:
+1. P¹ × P² = P¹⁺² (nhân ma trận)
+2. Tổng xác suất = 1: Σᵢ πᵢ = 1
+3. Eigenvalue lớn nhất = 1
+4. Phân phối dừng = eigenvector ứng eigenvalue 1
+
+Các loại chuỗi Markov:
+
+1. Ergodic (công thái):
+   - Irreducible + aperiodic
+   - Có phân phối dừng duy nhất
+   - Mọi trạng thái ban đầu đều hội tụ về π
+
+2. Absorbing (hấp thụ):
+   - Có trạng thái không thoát được
+   - Ví dụ: Game over trong game
+   - P[i][i] = 1 cho trạng thái hấp thụ
+
+3. Periodic (tuần hoàn):
+   - Quay vòng với chu kỳ cố định
+   - Ví dụ: Đi vòng quanh hình vuông
+
+Ứng dụng thực tế:
+
+1. PageRank (Google):
+   - Trang web = trạng thái
+   - Link = chuyển trạng thái
+   - Phân phối dừng = độ quan trọng
+
+2. Dự đoán văn bản:
+   - Từ = trạng thái
+   - P[i][j] = xác suất từ j sau từ i
+   - Sinh câu tự động
+
+3. Thời tiết:
+   - Dự đoán thời tiết ngày mai
+   - Phân tích xu hướng dài hạn
+
+4. Tài chính:
+   - Mô hình giá cổ phiếu
+   - Credit rating transitions
+
+5. Sinh học:
+   - Di truyền học: Hardy-Weinberg
+   - Động lực học quần thể
+
+6. Lý thuyết hàng đợi:
+   - Số khách trong hệ thống
+   - Thời gian chờ trung bình
+
+Mở rộng:
+- Hidden Markov Model (HMM): Trạng thái ẩn, chỉ quan sát được output
+- Continuous-time Markov Chain: Thời gian liên tục
+- Markov Decision Process (MDP): Có hành động và phần thưởng
+
+
+// Tinh chat chuoi Markov:
+//
+// 1. Ma tran chuyen trang thai P:
+//    - P[i][j] = xac suat chuyen tu trang thai i sang j
+//    - Moi hang tong = 1 (stochastic matrix)
+//
+// 2. Trang thai sau n buoc:
+//    p_n = p_0 * P^n
+//
+// 3. Phan phoi dung (steady state):
+//    pi = lim_{n->inf} p_n
+//    Thoa man: pi * P = pi
+//    Co nghia la xac suat khong thay doi sau khi chuyen trang thai
+//
+// 4. Do phuc tap tinh P^n:
+//    - Naive: O(n * k^3) neu tinh P^2, P^3, ..., P^n
+//    - Toi uu: O(k^3 * log(n)) neu dung luy thua nhi phan

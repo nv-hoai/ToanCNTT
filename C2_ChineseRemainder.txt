@@ -1,0 +1,69 @@
+THUAT TOAN: Dinh ly Du Trung Hoa (Chinese Remainder Theorem)
+DO PHUC TAP: O(n^2 * log(M)) voi M la tich cac moduli
+
+PSEUDO CODE:
+function extendedGCD(a, b):
+    if b == 0:
+        return (a, 1, 0)
+    
+    gcd, x1, y1 = extendedGCD(b, a % b)
+    x = y1
+    y = x1 - (a / b) * y1
+    return (gcd, x, y)
+
+function modularInverse(a, m):
+    gcd, x, y = extendedGCD(a, m)
+    if gcd != 1:
+        return null  // Khong ton tai nghich dao
+    return (x % m + m) % m
+
+function chineseRemainder(remainders, moduli):
+    // Giai he: x ≡ a_i (mod m_i)
+    n = length(remainders)
+    M = 1
+    
+    // Tinh tich cac moduli
+    for i = 0 to n-1:
+        M = M * moduli[i]
+    
+    x = 0
+    for i = 0 to n-1:
+        M_i = M / moduli[i]
+        y_i = modularInverse(M_i, moduli[i])
+        x = x + remainders[i] * M_i * y_i
+    
+    return x % M
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Định lý thặng dư Trung Hoa (Chinese Remainder Theorem):
+- Bài toán: Tìm số x thỏa mãn đồng thời nhiều phương trình đồng dư
+  * x ≡ a₁ (mod m₁)
+  * x ≡ a₂ (mod m₂)
+  * ...
+  * x ≡ aₙ (mod mₙ)
+  với điều kiện các mᵢ đôi một nguyên tố cùng nhau
+
+Thuật toán giải:
+
+Bước 1: Tính tích tất cả các modulo
+- M = m₁ × m₂ × ... × mₙ
+- Đây là chu kỳ của nghiệm
+
+Bước 2: Với mỗi phương trình thứ i:
+- Tính Mᵢ = M / mᵢ (tích tất cả modulo trừ mᵢ)
+- Tìm nghịch đảo modular yᵢ của Mᵢ theo mᵢ
+  * yᵢ × Mᵢ ≡ 1 (mod mᵢ)
+  * Dùng thuật toán Euclid mở rộng để tìm yᵢ
+
+Bước 3: Kết hợp các nghiệm riêng
+- x = Σ(aᵢ × Mᵢ × yᵢ) mod M
+- Đây là nghiệm nhỏ nhất không âm
+
+Ví dụ minh họa:
+- x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 2 (mod 7)
+- M = 3×5×7 = 105
+- M₁=35, M₂=21, M₃=15
+- Tìm y₁, y₂, y₃ rồi tính x = (2×35×y₁ + 3×21×y₂ + 2×15×y₃) mod 105
+
+Ứng dụng: Mã hóa RSA, tính toán phân tán, lịch vạn niên

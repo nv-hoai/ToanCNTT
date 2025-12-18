@@ -1,0 +1,60 @@
+THUAT TOAN: Sang nguyen to Eratosthenes (Sieve of Eratosthenes)
+DO PHUC TAP: O(n * log(log(n)))
+
+PSEUDO CODE:
+function sieveOfEratosthenes(n):
+    isPrime = array[0..n] filled with true
+    isPrime[0] = false
+    isPrime[1] = false
+    
+    for p = 2 to sqrt(n):
+        if isPrime[p] == true:
+            // Danh dau tat ca boi so cua p
+            for i = p*p to n step p:
+                isPrime[i] = false
+    
+    // Thu thap cac so nguyen to
+    primes = []
+    for i = 2 to n:
+        if isPrime[i] == true:
+            primes.append(i)
+    
+    return primes
+
+
+THUAT TOAN: Tim so nguyen to trong doan [a, b]
+DO PHUC TAP: O(b * log(log(b)))
+
+PSEUDO CODE:
+function primesInRange(a, b):
+    allPrimes = sieveOfEratosthenes(b)
+    result = []
+    
+    for each prime in allPrimes:
+        if prime >= a:
+            result.append(prime)
+    
+    return result
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+1. Thuật toán Sàng Eratosthenes:
+   - Chuẩn bị một mảng đánh dấu, ban đầu giả định tất cả các số từ 2 đến n đều là số nguyên tố
+   - Đánh dấu 0 và 1 không phải là số nguyên tố
+   - Bắt đầu từ số nguyên tố nhỏ nhất là 2:
+     * Giữ nguyên 2 là số nguyên tố
+     * Loại bỏ tất cả bội số của 2: 4, 6, 8, 10, ...
+   - Chuyển sang số nguyên tố tiếp theo còn lại (3):
+     * Giữ nguyên 3 là số nguyên tố
+     * Loại bỏ tất cả bội số của 3: 9, 12, 15, ... (6 đã bị loại ở bước trước)
+   - Lặp lại quá trình cho đến khi duyệt hết các số đến căn n
+   - Tất cả các số còn được đánh dấu là số nguyên tố chính là kết quả
+   
+2. Tìm số nguyên tố trong đoạn [a, b]:
+   - Sử dụng sàng Eratosthenes để tìm tất cả số nguyên tố từ 2 đến b
+   - Lọc ra những số nguyên tố có giá trị từ a trở lên
+   - Trả về danh sách các số nguyên tố trong khoảng [a, b]
+   
+Giải thích tối ưu:
+- Chỉ cần duyệt đến căn n vì: nếu n có ước lớn hơn căn n, thì n cũng phải có ước nhỏ hơn căn n
+- Khi loại bội số của p, bắt đầu từ p² vì các bội nhỏ hơn đã được loại ở các vòng trước

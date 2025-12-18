@@ -1,0 +1,85 @@
+THUAT TOAN: Phan tich SVD (Singular Value Decomposition)
+DO PHUC TAP: O(m*n^2 + n^3)
+
+PSEUDO CODE:
+function SVD(A):
+    // A: ma tran m x n
+    // Tra ve: U, Sigma, V^T
+    
+    m = rows(A)
+    n = cols(A)
+    
+    // Tinh A^T * A
+    ATA = transpose(A) * A
+    
+    // Tim eigenvalues va eigenvectors cua A^T * A
+    V, eigenvalues = jacobiEigenvalue(ATA)
+    
+    // Tinh singular values
+    singularValues = sqrt(eigenvalues)
+    
+    // Sap xep giam dan
+    sortDescending(singularValues, V)
+    
+    // Tao ma tran Sigma
+    Sigma = zeros(m, n)
+    for i = 0 to min(m,n)-1:
+        Sigma[i][i] = singularValues[i]
+    
+    // Tinh U
+    U = A * V * diag(1/singularValues)
+    
+    return (U, Sigma, V)
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+SVD bằng phương pháp Bidiagonalization (cải tiến độ ổn định số):
+
+Đặc điểm của phương pháp này:
+- So với cách tính qua AᵀA: cách đó có thể mất chính xác khi bình phương số rất lớn/nhỏ
+- Phương pháp này: Dùng hai bước (Bidiagonalization + QR iteration) để ổn định hơn
+
+Thuật toán:
+
+Bước 1: Khử Householder để biến A thành dạng trên-đường chéo-kép (bidiagonal)
+- Dạng B có phần tử khác 0 chỉ trên đường chéo và đường chéo phụ bên trên
+- Ví dụ 4×3: [*, *, 0]
+                [0, *, *]
+                [0, 0, *]
+                [0, 0, 0]
+- Quá trình khử lưu lại các phép biến đổi trực giao để tạo U và V
+
+Khử Householder:
+- Tìm ma trận phản xạ H để "bắn" vector thành vector đơn vị
+- H = I - 2wwᵀ với w là vector đơn vị
+- Áp dụng lần lượt từ trái và từ phải
+
+Bước 2: Lặp QR trên ma trận bidiagonal B
+- Phân tích B = Q × R (QR decomposition)
+- Cập nhật B' = R × Q
+- Lặp cho đến khi B hội tụ về dạng đường chéo
+- Các phần tử trên đường chéo → giá trị suy biến
+
+Bước 3: Tích lũy các phép biến đổi
+- U = tích các phép Householder từ trái
+- V = tích các phép Householder từ phải
+- Σ = ma trận đường chéo từ B hội tụ
+
+Ưu điểm của phương pháp Bidiagonalization:
+- Không bình phương điều kiện (conditioning number) như cách dùng AᵀA
+- Ổn định số tốt hơn, đặc biệt với ma trận xấu (ill-conditioned)
+- Độ phức tạp: O(mn²) với m ≥ n
+
+Khi nào nên dùng phương pháp này:
+- Ma trận lớn: Hiệu quả và ổn định
+- Dữ liệu thực tế: Thường có nhiễu, cần phương pháp robust
+- Cần độ chính xác cao: Đặc biệt quan trọng trong ứng dụng khoa học
+
+Ứng dụng:
+- Nén ảnh và video: Giữ k giá trị suy biến lớn nhất, loại bỏ thông tin ít quan trọng
+- Khử nhiễu dữ liệu: Lọc bỏ các thành phần có giá trị suy biến nhỏ
+- Giải hệ phương trình suy biến: Tìm nghiệm xấp xỉ tốt nhất
+- Hệ gợi ý (recommendation systems): Phân tích ma trận user-item
+- Principal Component Analysis (PCA): Giảm chiều dữ liệu
+- Xử lý ngôn ngữ tự nhiên: Latent Semantic Analysis (LSA)
+- Phương pháp Bidiagonalization được ưu tiên trong môi trường sản xuất do độ tin cậy và ổn định cao

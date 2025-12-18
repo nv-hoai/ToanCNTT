@@ -1,0 +1,60 @@
+THUAT TOAN: Kiem tra so hoan hao (Perfect Number Check)
+DO PHUC TAP: O(sqrt(n))
+
+PSEUDO CODE:
+function isPerfect(n):
+    if n <= 1:
+        return false
+    
+    sum = 1  // 1 luon la uoc so
+    
+    for i = 2 to sqrt(n):
+        if n % i == 0:
+            sum = sum + i
+            if i != n / i:
+                sum = sum + n / i
+    
+    return (sum == n)
+
+
+THUAT TOAN: Kiem tra so nguyen to
+DO PHUC TAP: O(sqrt(n))
+
+PSEUDO CODE:
+function isPrime(n):
+    if n < 2:
+        return false
+    if n == 2:
+        return true
+    if n % 2 == 0:
+        return false
+    
+    for i = 3 to sqrt(n) step 2:
+        if n % i == 0:
+            return false
+    
+    return true
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+1. Kiểm tra số hoàn hảo:
+   - Số hoàn hảo là số bằng tổng các ước số thực sự của nó (không tính chính nó)
+   - Ví dụ: 6 = 1 + 2 + 3; 28 = 1 + 2 + 4 + 7 + 14
+   - Cách kiểm tra:
+     * Nếu n ≤ 1: không phải số hoàn hảo
+     * Khởi tạo tổng = 1 (vì 1 luôn là ước của mọi số)
+     * Duyệt các số từ 2 đến căn n
+     * Với mỗi ước số i tìm được:
+       - Cộng i vào tổng
+       - Nếu i khác n/i, cũng cộng n/i vào tổng
+     * So sánh tổng với n: nếu bằng nhau thì là số hoàn hảo
+
+2. Kiểm tra số nguyên tố:
+   - Loại các trường hợp cơ bản:
+     * Số < 2: không phải SNT
+     * Số 2: là SNT (duy nhất chẵn)
+     * Số chẵn khác: không phải SNT
+   - Với số lẻ ≥ 3:
+     * Thử chia cho các số lẻ từ 3 đến căn n
+     * Nếu chia hết: không phải SNT
+     * Nếu không chia hết cho số nào: là SNT

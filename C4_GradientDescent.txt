@@ -1,0 +1,83 @@
+THUAT TOAN: Gradient Descent co ban
+DO PHUC TAP: O(k * n) voi k la so vong lap, n la chieu cua bien
+
+PSEUDO CODE:
+function gradientDescent(x0, gamma, epsilon, maxIter):
+    // x0: diem khoi dau
+    // gamma: learning rate (buoc nhay)
+    // epsilon: sai so hoi tu
+    
+    x = x0
+    
+    for iter = 0 to maxIter:
+        // Tinh gradient tai x
+        grad = gradient_f(x)
+        
+        // Kiem tra hoi tu
+        normGrad = ||grad||
+        if normGrad < epsilon:
+            break
+        
+        // Cap nhat bien theo huong nguoc gradient
+        x = x - gamma * grad
+    
+    return x
+
+
+// Cong thuc cap nhat:
+// x_{k+1} = x_k - gamma * gradient_f(x_k)
+//
+// Gamma qua lon: dao dong, khong hoi tu
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Thuật toán Gradient Descent (Hạ gradient):
+- Phương pháp tối ưu cơ bản nhất và quan trọng nhất
+- Mục tiêu: Tìm điểm cực tiểu của hàm f(x)
+
+Ý tưởng chính:
+- Giống như đi xuống núi trong sương mù: luôn chọn hướng dốc nhất
+- Gradient chỉ hướng tăng nhanh nhất → đi ngược lại để giảm
+
+Thuật toán:
+
+Bước 1: Khởi tạo
+- Chọn điểm xuất phát x₀ (ngẫu nhiên hoặc ước lượng)
+- Đặt learning rate γ (bước nhảy)
+
+Bước 2: Lặp cho đến hội tụ:
+- Tính gradient tại vị trí hiện tại: ∇f(xₖ)
+- Cập nhật: xₖ₊₁ = xₖ - γ × ∇f(xₖ)
+- Kiểm tra dừng: ||∇f(x)|| < ε hoặc |Δx| < ε
+
+Giải thích công thức:
+- ∇f(x): Vector hướng tăng nhanh nhất
+- -∇f(x): Hướng giảm nhanh nhất
+- γ: Độ dài bước nhảy
+
+Chọn Learning Rate γ:
+- Quá nhỏ: Hội tụ chậm, tốn nhiều vòng lặp
+- Quá lớn: Dao động, không hội tụ
+- Vừa phải: Hội tụ ổn định
+
+Các biến thể:
+1. Batch GD: Dùng toàn bộ dữ liệu mỗi lần
+2. Stochastic GD: Dùng 1 điểm dữ liệu
+3. Mini-batch GD: Dùng một batch nhỏ
+
+Ưu điểm:
+- Đơn giản, dễ hiểu
+- Phù hợp hàm lồi (convex)
+- Tốn ít bộ nhớ
+
+Nhược điểm:
+- Hội tụ chậm với hàm phẳng
+- Có thể kẹt tại cực tiểu địa phương
+- Nhạy cảm với γ
+
+Ứng dụng:
+- Hầu hết thuật toán Machine Learning
+- Neural Networks (backpropagation)
+- Logistic Regression
+- Tối ưu phi tuyến
+// Gamma qua nho: hoi tu cham

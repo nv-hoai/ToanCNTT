@@ -1,0 +1,186 @@
+THUAT TOAN: Augmented Lagrangian Method (ALM)
+DO PHUC TAP: O(k * m * n) voi k la so vong lap ngoai, m la so vong lap trong, n la chieu cua bien
+
+PSEUDO CODE:
+function augmentedLagrangian(x0, lambda0, rho0):
+    // Giai bai toan: min f(x) subject to h(x) = 0
+    
+    x = x0
+    lambda = lambda0
+    rho = rho0
+    
+    maxOuter = 50
+    epsilon = 1e-6
+    rhoMax = 1e6
+    
+    for k = 0 to maxOuter:
+        // Giai bai toan con: min L(x, lambda, rho)
+        x = solveSubproblem(x, lambda, rho)
+        
+        // Tinh rang buoc
+        h_val = h(x)
+        
+        // Kiem tra hoi tu
+        if |h_val| < epsilon:
+            break
+        
+        // Cap nhat Lagrange multiplier
+        lambda = lambda - rho * h_val
+        
+        // Tang penalty parameter neu can
+        if |h_val| > 0.25 * |h_prev|:
+            rho = min(rho * 10, rhoMax)
+        
+        h_prev = h_val
+    
+    return x
+
+
+function solveSubproblem(x, lambda, rho):
+    // Giai: min L_rho(x) = f(x) - lambda*h(x) + 0.5*rho*h(x)^2
+    // Su dung gradient descent voi line search
+    
+    maxIter = 5000
+    tol = 1e-8
+    alpha = 0.1
+    
+    for i = 0 to maxIter:
+        // Tinh gradient cua augmented Lagrangian
+        grad = gradientL(x, lambda, rho)
+        
+        normGrad = ||grad||
+        if normGrad < tol:
+            break
+        
+        // Line search (backtracking)
+        L_old = L(x, lambda, rho)
+        alphaTemp = alpha
+        
+        for ls = 0 to 30:
+            x_new = x - alphaTemp * grad
+            L_new = L(x_new, lambda, rho)
+            
+            if L_new < L_old - 0.0001 * alphaTemp * normGrad^2:
+                x = x_new
+                alpha = min(1.0, alphaTemp * 1.1)
+                break
+            
+            alphaTemp = alphaTemp * 0.5
+    
+    return x
+
+
+function gradientL(x, lambda, rho):
+    h_val = h(x)
+    grad_f = gradient_f(x)
+    grad_h = gradient_h(x)
+    
+    return grad_f + (rho * h_val - lambda) * grad_h
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Phương pháp Lagrange nhân tử tăng cường (Augmented Lagrangian Method - ALM):
+- Giải bài toán tối ưu có ràng buộc
+- Kết hợp Lagrange multipliers và penalty method
+
+Bài toán gốc:
+- Minimize: f(x)
+- Subject to: h(x) = 0 (ràng buộc đẳng thức)
+
+Ý tưởng:
+1. Lagrange multipliers: Biến ràng buộc thành hàm mục tiêu
+2. Penalty: Phạt vi phạm ràng buộc
+3. Kết hợp: Lagrangian tăng cường
+
+Hàm Lagrangian tăng cường:
+L(x, λ, ρ) = f(x) - λᵀh(x) + (ρ/2)||h(x)||²
+
+Các thành phần:
+1. f(x): Hàm mục tiêu gốc
+2. -λᵀh(x): Thành phần Lagrange
+3. (ρ/2)||h(x)||²: Thành phần penalty
+
+Thuật toán:
+
+Bước 1: Khởi tạo
+- x₀: Điểm xuất phát
+- λ₀ = 0: Nhân tử Lagrange ban đầu
+- ρ₀ > 0: Tham số penalty ban đầu
+
+Bước 2: Vòng ngoài (cập nhật λ và ρ):
+Repeat until ||h(x)|| < ε:
+
+  Bước 2a: Vòng trong (tối ưu x)
+  - Minimize L(x, λₖ, ρₖ) theo x
+  - Dùng Gradient Descent hoặc Newton
+  - Kết quả: xₖ₊₁
+  
+  Bước 2b: Cập nhật nhân tử Lagrange
+  - λₖ₊₁ = λₖ - ρₖ × h(xₖ₊a)
+  - Hướng cải thiện đối ngẫu (dual improvement)
+  
+  Bước 2c: Tăng penalty (nếu cần)
+  - Nếu ||h(xₖ₊₁)|| không giảm đủ:
+    * ρₖ₊₁ = γ × ρₖ (ví dụ γ = 2)
+  - Ngược lại:
+    * ρₖ₊₁ = ρₖ
+
+Giải thích cơ chế:
+
+1. Thành phần Lagrange -λᵀh(x):
+   - Đưa thông tin đối ngẫu (dual)
+   - Hướng dẫn cách thỏa mãn ràng buộc
+
+2. Thành phần penalty (ρ/2)||h(x)||²:
+   - Phạt vi phạm ràng buộc
+   - Đẩy x về vùng khả thi
+
+3. Tăng ρ:
+   - Penalty mạnh hơn
+   - Ép buộc thỏa ràng buộc chặt chẽ hơn
+
+4. Cập nhật λ:
+   - λ là "giá" của ràng buộc
+   - Di chuyển theo gradient của Lagrangian
+
+So sánh với các phương pháp khác:
+
+1. Penalty Method:
+   - Chỉ có (ρ/2)||h(x)||²
+   - Cần ρ rất lớn → ill-conditioned
+   - ALM khắc phục nhờ λ
+
+2. Lagrange Multipliers:
+   - Chỉ có -λᵀh(x)
+   - Yêu cầu giải saddle point (khó)
+   - ALM ổn định hơn nhờ penalty
+
+Kỹ thuật cải tiến:
+
+1. Adaptive penalty:
+   - Tăng ρ thông minh
+   - Giảm khi gần hội tụ
+
+2. Warm start:
+   - Dùng x cũ làm xuất phát cho vòng mới
+   - Tiết kiệm tính toán
+
+3. Inexact minimization:
+   - Không cần tối ưu x hoàn toàn
+   - Vài vòng Gradient Descent là đủ
+
+Ưu điểm:
+- Robust, hội tụ ổn định
+- Xử lý tốt ràng buộc phi tuyến
+- Không cần ρ quá lớn
+
+Nhược điểm:
+- Chậm hơn unconstrained
+- Nhiều tham số cần điều chỉnh
+
+Ứng dụng:
+- Bài toán tối ưu có ràng buộc
+- Control theory
+- Structural optimization
+- Machine learning (constrained models)
+- Image processing (denoising với ràng buộc)

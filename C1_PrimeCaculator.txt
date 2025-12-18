@@ -1,0 +1,53 @@
+THUAT TOAN: Kiem tra so nguyen to (Primality Test)
+DO PHUC TAP: O(sqrt(n))
+
+PSEUDO CODE:
+function isPrime(n):
+    if n < 2:
+        return false
+    if n == 2:
+        return true
+    if n % 2 == 0:
+        return false
+    
+    for i = 3 to sqrt(n) step 2:
+        if n % i == 0:
+            return false
+    
+    return true
+
+
+THUAT TOAN: Tim so nguyen to trong doan
+DO PHUC TAP: O((b - a) * sqrt(b))
+
+PSEUDO CODE:
+function findPrimesInRange(a, b):
+    primes = []
+    
+    for num = a to b:
+        if isPrime(num):
+            primes.append(num)
+    
+    return primes
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+1. Kiểm tra số nguyên tố:
+   - Loại trừ các trường hợp đặc biệt:
+     * Số nhỏ hơn 2 không phải số nguyên tố
+     * Số 2 là số nguyên tố duy nhất chẵn
+     * Các số chẵn khác không phải số nguyên tố
+   - Với số lẻ từ 3 trở lên:
+     * Thử chia cho các số lẻ từ 3 đến căn bậc hai của n
+     * Nếu chia hết cho bất kỳ số nào → không phải số nguyên tố
+     * Nếu không chia hết cho số nào → là số nguyên tố
+   - Chỉ kiểm tra đến căn n vì: nếu n có ước lớn hơn căn n thì cũng phải có ước nhỏ hơn căn n
+
+2. Tìm số nguyên tố trong đoạn [a, b]:
+   - Chuẩn bị danh sách rỗng để chứa kết quả
+   - Duyệt qua từng số trong đoạn từ a đến b
+   - Với mỗi số, kiểm tra xem có phải số nguyên tố không
+   - Nếu là số nguyên tố, thêm vào danh sách kết quả
+   - Trả về danh sách tất cả số nguyên tố tìm được
+   
+Lưu ý: Phương pháp này phù hợp khi đoạn [a,b] ngắn. Với đoạn dài, nên dùng Sàng Eratosthenes sẽ hiệu quả hơn.

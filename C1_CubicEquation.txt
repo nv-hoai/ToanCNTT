@@ -1,0 +1,74 @@
+THUAT TOAN: Giai phuong trinh bac 3 (Cardano's Method)
+DO PHUC TAP: O(1)
+
+PSEUDO CODE:
+function solveCubic(a, b, c, d):
+    // Phuong trinh: ax^3 + bx^2 + cx + d = 0
+    
+    // Chuyen ve dang chuan: t^3 + pt + q = 0
+    p = (3*a*c - b*b) / (3*a*a)
+    q = (2*b*b*b - 9*a*b*c + 27*a*a*d) / (27*a*a*a)
+    
+    // Tinh discriminant
+    delta = -(4*p*p*p + 27*q*q)
+    
+    if delta > 0:
+        // 3 nghiem thuc phan biet
+        r = sqrt(-p/3)
+        theta = acos(-q / (2 * r * r * r)) / 3
+        
+        t1 = 2 * r * cos(theta)
+        t2 = 2 * r * cos(theta + 2*PI/3)
+        t3 = 2 * r * cos(theta + 4*PI/3)
+        
+        x1 = t1 - b / (3*a)
+        x2 = t2 - b / (3*a)
+        x3 = t3 - b / (3*a)
+        
+        return (x1, x2, x3)
+    
+    else if delta == 0:
+        // Nghiem boi
+        t = 3*q / p
+        x1 = t - b / (3*a)
+        x2 = -t/2 - b / (3*a)
+        return (x1, x2, x2)
+    
+    else:
+        // 1 nghiem thuc, 2 nghiem phuc
+        u = cbrt(-q/2 + sqrt(-delta/108))
+        v = cbrt(-q/2 - sqrt(-delta/108))
+        x1 = u + v - b / (3*a)
+        return (x1, complex, complex)
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Giải phương trình bậc 3 bằng công thức Cardano:
+- Phương trình tổng quát: ax³ + bx² + cx + d = 0
+
+Bước 1: Chuyển về dạng chuẩn
+- Chia tất cả các hệ số cho a
+- Đổi biến để khử hệ số bậc 2, được phương trình dạng: t³ + pt + q = 0
+- Trong đó: p và q được tính từ a, b, c, d
+
+Bước 2: Tính biệt thức (discriminant)
+- Delta = -(4p³ + 27q²)
+- Delta quyết định số nghiệm thực của phương trình
+
+Bước 3: Xét các trường hợp
+- Trường hợp 1: Delta > 0 (3 nghiệm thực phân biệt)
+  * Tính r = căn bậc hai của (-p/3)
+  * Tính góc theta từ công thức lượng giác
+  * Ba nghiệm được tính bằng công thức cos với các góc khác nhau
+  * Chuyển về nghiệm gốc bằng cách trừ đi b/(3a)
+
+- Trường hợp 2: Delta = 0 (có nghiệm bội)
+  * Một nghiệm đơn và một nghiệm kép
+  * Tính trực tiếp từ p và q
+
+- Trường hợp 3: Delta < 0 (1 nghiệm thực, 2 nghiệm phức)
+  * Tính u và v bằng công thức căn bậc ba
+  * Nghiệm thực x = u + v - b/(3a)
+  * Hai nghiệm phức liên hợp
+
+Lưu ý: Công thức Cardano là công thức đại số đóng để giải phương trình bậc 3

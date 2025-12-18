@@ -1,0 +1,51 @@
+THUAT TOAN: Phan tich thua so nguyen to (Trial Division)
+DO PHUC TAP: O(sqrt(n))
+
+PSEUDO CODE:
+function primeFactorization(n):
+    factors = []
+    exponents = []
+    
+    // Xu ly uoc so 2
+    count = 0
+    while n % 2 == 0:
+        count = count + 1
+        n = n / 2
+    if count > 0:
+        factors.append(2)
+        exponents.append(count)
+    
+    // Xu ly cac uoc so le
+    i = 3
+    while i * i <= n:
+        count = 0
+        while n % i == 0:
+            count = count + 1
+            n = n / i
+        if count > 0:
+            factors.append(i)
+            exponents.append(count)
+        i = i + 2
+    
+    // Neu n > 1 thi n la so nguyen to
+    if n > 1:
+        factors.append(n)
+        exponents.append(1)
+    
+    return (factors, exponents)
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Phân tích số thành thừa số nguyên tố kèm số mũ:
+- Chuẩn bị hai danh sách: một cho các thừa số nguyên tố, một cho số mũ tương ứng
+- Bước 1: Xử lý ước số 2
+  * Đếm xem n chia hết cho 2 bao nhiêu lần
+  * Nếu chia hết ít nhất 1 lần, thêm 2 vào danh sách thừa số và số lần vào danh sách số mũ
+- Bước 2: Xử lý các ước số lẻ từ 3 trở đi
+  * Với mỗi số lẻ i từ 3 đến căn n
+  * Đếm xem n chia hết cho i bao nhiêu lần
+  * Nếu chia hết ít nhất 1 lần, ghi lại i và số lần chia
+- Bước 3: Xử lý phần còn lại
+  * Sau khi chia hết các ước nhỏ hơn căn n
+  * Nếu n vẫn lớn hơn 1, thì n còn lại chính là một thừa số nguyên tố với số mũ là 1
+- Kết quả trả về cặp danh sách (thừa số, số mũ)

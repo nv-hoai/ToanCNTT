@@ -1,0 +1,114 @@
+THUAT TOAN: Phan tich Cholesky co dien (Classical Cholesky Decomposition)
+DO PHUC TAP: O(n^3)
+
+PSEUDO CODE:
+function classicalCholesky(A):
+    // A = L * L^T
+    // A: ma tran doi xung, positive definite (n x n)
+    // L: ma tran tam giac duoi
+    
+    n = size(A)
+    L = matrix(n, n) filled with 0
+    
+    for i = 0 to n-1:
+        for j = 0 to i:
+            sum = 0
+            for k = 0 to j-1:
+                sum = sum + L[i][k] * L[j][k]
+            
+            if i == j:
+                L[i][j] = sqrt(A[i][i] - sum)
+            else:
+                L[i][j] = (A[i][j] - sum) / L[j][j]
+    
+    return L
+
+
+THUAT TOAN: Phan tich Cholesky bien the (LDL^T Decomposition)
+DO PHUC TAP: O(n^3)
+
+PSEUDO CODE:
+function variantCholesky(A):
+    // A = L * D * L^T
+    // L: ma tran tam giac duoi voi duong cheo = 1
+    // D: ma tran duong cheo
+    
+    n = size(A)
+    L = identity_matrix(n, n)
+    D = matrix(n, n) filled with 0
+    
+    for i = 0 to n-1:
+        for j = 0 to i:
+            sum = 0
+            for k = 0 to j-1:
+                sum = sum + L[i][k] * D[k][k] * L[j][k]
+            
+            if i == j:
+                D[i][i] = A[i][i] - sum
+            else:
+                L[i][j] = (A[i][j] - sum) / D[j][j]
+    
+    return (L, D)
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Phân tích Cholesky (Cholesky Decomposition):
+- Mục đích: Phân tích ma trận đối xứng xác định dương A thành tích A = L × Lᵀ
+- L là ma trận tam giác dưới với các phần tử đường chéo dương
+
+Điều kiện áp dụng:
+- Ma trận A phải đối xứng (A = Aᵀ)
+- Ma trận A phải xác định dương (tất cả trị riêng > 0)
+- Tương đương: tất cả định thức con chính > 0
+
+Thuật toán cổ điển - tính từng phần tử:
+
+Bước 1: Tính các phần tử trên đường chéo
+- L[i][i] = √(A[i][i] - Σⱼ₌₀^(i-1) L[i][j]²)
+- Trừ đi tổng bình phương các phần tử cùng hàng bên trái
+- Lấy căn bậc hai kết quả
+
+Bước 2: Tính các phần tử dưới đường chéo
+- L[i][j] = (A[i][j] - Σₖ₌₀^(j-1) L[i][k]×L[j][k]) / L[j][j]
+- Trừ đi tổng tích các phần tử tương ứng
+- Chia cho phần tử đường chéo của cột j
+
+Bước 3: Các phần tử trên đường chéo = 0
+
+Thuật toán biến thể (LDLᵀ Decomposition) - tính từng phần tử:
+
+Khái niệm:
+- Phân tích thành A = L × D × Lᵀ
+- L là ma trận tam giác dưới có đường chéo = 1
+- D là ma trận đường chéo (chứa các giá trị dương)
+
+Bước 1: Tính các phần tử đường chéo của D
+- D[i][i] = A[i][i] - Σₖ₌₀^(i-1) L[i][k]² × D[k][k]
+- Trừ đi tổng của (L[i][k] bình phương nhân D[k][k])
+- Kết quả là giá trị đường chéo thứ i của ma trận D
+
+Bước 2: Tính các phần tử dưới đường chéo của L
+- L[i][j] = (A[i][j] - Σₖ₌₀^(j-1) L[i][k] × D[k][k] × L[j][k]) / D[j][j]
+- Trừ đi tổng tích có trọng số D[k][k]
+- Chia cho phần tử đường chéo D[j][j]
+
+Bước 3: Phần tử đường chéo của L
+- L[i][i] = 1 (tất cả các phần tử đường chéo bằng 1)
+
+Bước 4: Các phần tử trên đường chéo của L = 0
+
+Ưu điểm của LDLᵀ so với Cholesky cổ điển:
+- Tránh phép tính căn bậc hai (nhanh hơn, chính xác hơn)
+- Ổn định số tốt hơn với ma trận gần suy biến
+- Dễ kiểm tra tính xác định dương (kiểm tra dấu D[i][i])
+
+Quá trình tính:
+- Tính từ trái sang phải, từ trên xuống dưới
+- Mỗi phần tử chỉ phụ thuộc các phần tử đã tính trước đó
+
+Ứng dụng:
+- Giải hệ phương trình tuyến tính hiệu quả
+- Tính định thức (tích các L[i][i])
+- Kiểm tra ma trận xác định dương
+- Mô phỏng Monte Carlo
+- Bài toán bình phương tối thiểu

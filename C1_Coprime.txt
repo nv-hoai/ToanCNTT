@@ -1,0 +1,62 @@
+THUAT TOAN: Euler's Totient Function (Ham Phi Euler)
+DO PHUC TAP: O(sqrt(n))
+
+PSEUDO CODE:
+function eulerPhi(n):
+    result = n
+    p = 2
+    while p * p <= n:
+        if n % p == 0:
+            while n % p == 0:
+                n = n / p
+            result = result - result / p
+        p = p + 1
+    if n > 1:
+        result = result - result / n
+    return result
+
+
+THUAT TOAN: Greatest Common Divisor (Thuat toan Euclidean)
+DO PHUC TAP: O(log(min(a, b)))
+
+PSEUDO CODE:
+function gcd(a, b):
+    while b != 0:
+        temp = b
+        b = a % b
+        a = temp
+    return a
+
+
+THUAT TOAN: Tim cac so nguyen to cung nhau voi n
+DO PHUC TAP: O(n * log(n))
+
+PSEUDO CODE:
+function findCoprime(n):
+    coprimes = []
+    for i = 1 to n-1:
+        if gcd(i, n) == 1:
+            coprimes.append(i)
+    return coprimes
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+1. Hàm Phi Euler:
+   - Bắt đầu với kết quả bằng n
+   - Duyệt qua tất cả các ước nguyên tố p của n từ 2 đến căn n
+   - Với mỗi ước nguyên tố p tìm được:
+     * Chia n cho p liên tục cho đến khi không chia hết
+     * Trừ đi một phần kết quả theo tỷ lệ 1/p
+   - Nếu sau khi chia hết các ước, n vẫn lớn hơn 1, thì n còn lại cũng là ước nguyên tố
+   - Trả về kết quả cuối cùng
+
+2. Ước chung lớn nhất (GCD):
+   - Lặp lại việc chia lấy dư cho đến khi số bị chia bằng 0
+   - Tại mỗi bước: số bé mới = phần dư, số lớn mới = số bé cũ
+   - Khi số bé = 0, số lớn chính là GCD
+
+3. Tìm các số nguyên tố cùng nhau:
+   - Duyệt qua tất cả các số từ 1 đến n-1
+   - Với mỗi số i, tính GCD của i và n
+   - Nếu GCD = 1, thì i nguyên tố cùng nhau với n
+   - Thu thập tất cả các số thỏa mãn vào danh sách kết quả

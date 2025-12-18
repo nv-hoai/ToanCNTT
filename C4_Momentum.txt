@@ -1,0 +1,110 @@
+THUAT TOAN: Gradient Descent voi Momentum
+DO PHUC TAP: O(k * n) voi k la so vong lap, n la chieu cua bien
+
+PSEUDO CODE:
+function gradientDescentMomentum(x0, gamma, beta, epsilon, maxIter):
+    // x0: diem khoi dau
+    // gamma: learning rate
+    // beta: momentum coefficient (0 < beta < 1)
+    // epsilon: sai so hoi tu
+    
+    x = x0
+    v = 0  // Velocity (vector cung chieu voi x)
+    
+    for iter = 0 to maxIter:
+        // Tinh gradient tai x
+        grad = gradient_f(x)
+        
+        // Kiem tra hoi tu
+        normGrad = ||grad||
+        if normGrad < epsilon:
+            break
+        
+        // Cap nhat velocity voi momentum
+        v = beta * v - gamma * grad
+        
+        // Cap nhat bien
+        x = x + v
+    
+    return x
+
+
+// Cong thuc momentum:
+// v_t = beta * v_{t-1} - gamma * gradient
+// x_t = x_{t-1} + v_t
+//
+
+MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
+
+Thuật toán Momentum (Gradient Descent với động lượng):
+- Cải tiến của Gradient Descent thêm "quán tính"
+- Giải quyết vấn đề dao động và chậm hội tụ
+
+Ý tưởng vật lý:
+- Giống như quả bóng lăn xuống dốc: không dừng lại ngay khi gặp chỗ phẳng
+- Tích lũy vận tốc từ các bước trước
+- Có thể vượt qua cực tiểu địa phương nhỏ
+
+Thuật toán:
+
+Bước 1: Khởi tạo
+- Điểm xuất phát x₀
+- Vận tốc ban đầu v₀ = 0
+- Learning rate γ (bước nhảy)
+- Hệ số momentum β (thường 0.9)
+
+Bước 2: Lặp cho đến hội tụ:
+- Tính gradient hiện tại: gₖ = ∇f(xₖ)
+- Cập nhật vận tốc: vₖ₊₁ = β × vₖ - γ × gₖ
+- Cập nhật vị trí: xₖ₊₁ = xₖ + vₖ₊₁
+
+Giải thích các thành phần:
+
+1. Thành phần quán tính: β × vₖ
+   - Giữ lại một phần vận tốc trước
+   - β = 0.9: giữ 90% vận tốc cũ
+   - Tạo hướng di chuyển ổn định
+
+2. Thành phần gradient: -γ × gₖ
+   - Lực đẩy theo gradient hiện tại
+   - Giống gradient descent thông thường
+
+Tác dụng của momentum:
+
+1. Tăng tốc trong thủng dài:
+   - Các gradient cùng hướng cộng dồn
+   - Vận tốc tăng dần
+   - Hội tụ nhanh hơn
+
+2. Giảm dao động trong kính hẹp:
+   - Các gradient ngược chiều triệt tiêu nhau
+   - Đi ổn định hơn
+
+3. Vượt cực tiểu địa phương:
+   - Quán tính giúp vượt "hố nhỏ"
+   - Tăng khả năng tìm cực tiểu toàn cục
+
+Chọn tham số:
+- β thường: 0.9, 0.95, 0.99
+- β lớn: Đi xa hơn, nhưng có thể quá đà
+- β nhỏ: Giống gradient descent thông thường
+
+So sánh với Gradient Descent:
+- GD: Đi thẳng, dẫm chân
+- Momentum: Trượt xuống, mượt mà
+
+Ưu điểm:
+- Hội tụ nhanh hơn GD
+- Ổn định hơn với hàm tồi tệ
+- Phù hợp hàm saddle point (yên ngựa)
+
+Nhược điểm:
+- Có thể overshot (vượt quá đích)
+- Thêm tham số β cần điều chỉnh
+
+Ứng dụng:
+- Training neural networks
+- Deep learning (SGD with Momentum)
+- Có thể kết hợp Nesterov Momentum
+// Beta gan 1: giu dong luong lau hon (smooth convergence)
+// Beta gan 0: it su dung dong luong (gan voi vanilla GD)
