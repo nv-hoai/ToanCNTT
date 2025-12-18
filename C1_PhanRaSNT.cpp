@@ -37,7 +37,6 @@ void PhanRaSNT(vector<int>& p, vector<int>& a, int n)
 
 void Print(const vector<int>& p, const vector<int>& a)
 {
-    printf("%d = ", p.empty() ? 1 : p[0]);
     for (size_t j = 0; j < p.size(); j++) {
         printf("%d^%d", p[j], a[j]);
         if (j + 1 < p.size()) printf(" * ");
@@ -48,7 +47,7 @@ int main()
 {
     vector<int> p, a;
     // Du lieu dau vao
-    int n = 360;
+    int n = 9;
 
     if (n <= 1) {
         printf("So %d khong co phan tich thua so nguyen to!\n", n);
@@ -56,6 +55,7 @@ int main()
     }
 
     PhanRaSNT(p, a, n);
+    printf("Phan tich thua so nguyen to cua %d: ", n);
     Print(p, a);
     printf("\n");
     

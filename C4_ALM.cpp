@@ -115,9 +115,9 @@ void solve_subproblem(double &x, double &y, double &z, double lambda, double rho
 int main()
 {
     cout << fixed << setprecision(6);
-    cout << "========== AUGMENTED LAGRANGIAN METHOD ==========" << endl;
-    cout << "Problem: Minimize f(x,y,z) = (x-1)^2 + (y-2)^2 + (z-1)^2 + 0.1*sin(x+y+z)" << endl;
-    cout << "         subject to: h(x,y,z) = 2x - y + z - 3 = 0" << endl
+    cout << "========== PHUONG PHAP LAGRANGE TANG CUONG ==========" << endl;
+    cout << "Bai toan: Cuc tieu hoa f(x,y,z) = (x-1)^2 + (y-2)^2 + (z-1)^2 + 0.1*sin(x+y+z)" << endl;
+    cout << "          voi rang buoc: h(x,y,z) = 2x - y + z - 3 = 0" << endl
          << endl;
 
     double x = 0.0, y = 0.0, z = 0.0;
@@ -126,17 +126,17 @@ int main()
     double rho_max = 1e6;
     double epsilon = 1e-6;
 
-    cout << "Parameters:" << endl;
-    cout << "  Initial rho = " << rho << endl;
-    cout << "  Rho max     = " << rho_max << endl;
-    cout << "  Epsilon     = " << epsilon << endl
+    cout << "Tham so:" << endl;
+    cout << "  rho ban dau = " << rho << endl;
+    cout << "  rho toi da   = " << rho_max << endl;
+    cout << "  epsilon      = " << epsilon << endl
          << endl;
 
-    cout << "Initial point: x=" << x << ", y=" << y << ", z=" << z << endl;
-    cout << "Initial value: f=" << f(x, y, z) << ", h=" << h(x, y, z) << endl
+    cout << "Diem bat dau: x=" << x << ", y=" << y << ", z=" << z << endl;
+    cout << "Gia tri ban dau: f=" << f(x, y, z) << ", h=" << h(x, y, z) << endl
          << endl;
 
-    cout << "Iter | x         | y         | z         | f(x,y,z) | h(x,y,z) | lambda   | rho      " << endl;
+    cout << "Vong | x         | y         | z         | f(x,y,z) | h(x,y,z) | lambda   | rho      " << endl;
     cout << "-----|-----------|-----------|-----------|----------|----------|----------|----------" << endl;
 
     int outer_iter = 0;
@@ -156,7 +156,7 @@ int main()
 
         if (fabs(h_val) < epsilon)
         {
-            cout << "\nConverged!" << endl;
+            cout << "\nDa hoi tu!" << endl;
             break;
         }
 
@@ -172,17 +172,17 @@ int main()
         outer_iter++;
     }
 
-    cout << "\n========== RESULTS ==========" << endl;
-    cout << "Converged in " << outer_iter << " outer iterations" << endl;
-    cout << "Final point:" << endl;
+    cout << "\n========== KET QUA ==========" << endl;
+    cout << "Hoi tu sau " << outer_iter << " vong lap ngoai" << endl;
+    cout << "Diem toi uu:" << endl;
     cout << "  x = " << x << endl;
     cout << "  y = " << y << endl;
     cout << "  z = " << z << endl;
-    cout << "Objective value: f = " << f(x, y, z) << endl;
-    cout << "Constraint value: h = " << h(x, y, z) << endl;
-    cout << "Lagrange multiplier: lambda = " << lambda << endl;
+    cout << "Gia tri ham muc tieu: f = " << f(x, y, z) << endl;
+    cout << "Gia tri rang buoc: h = " << h(x, y, z) << endl;
+    cout << "Nhan tu Lagrange: lambda = " << lambda << endl;
 
-    cout << "\nVerification:" << endl;
+    cout << "\nKiem tra rang buoc:" << endl;
     cout << "  2x - y + z - 3 = " << (2 * x - y + z - 3) << endl;
 
     return 0;

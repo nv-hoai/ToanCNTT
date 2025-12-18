@@ -108,7 +108,7 @@ void Print(const vector<int>& p, const vector<int>& a)
 {
     for (size_t j = 0; j < p.size(); j++) {
         printf("%d^%d", p[j], a[j]);
-        if (j + 1 < p.size()) printf(".");
+        if (j + 1 < p.size()) printf("*");
     }
 }
 
@@ -117,7 +117,7 @@ int main()
     vector<int> p, a;
     // Du lieu dau vao
     int n = 360;
-    int aInput = 5;
+    int aInput = 1;
 
     if (n <= 1) {
         printf("Khong co phan tich so nguyen to!\n");
@@ -125,6 +125,7 @@ int main()
     }
 
     PhanRaSNT(p, a, n);
+    printf("Phan tich thua so nguyen to cua %d: ", n);
     Print(p, a);
 
     int m = p.back();

@@ -69,8 +69,8 @@ void computeHessian(double x, double y, double z, vector<vector<double>>& H)
 // Tham so:
 //   A: Ma tran he so (truyen theo tham chieu)
 //   b: Vector ve phai
-//   x: Nghiem (output, truyen theo tham chieu)
-void solveLinearSystem(vector<vector<double>>& A, vector<double>& b, vector<double>& x)
+//   sol: Nghiem (output, truyen theo tham chieu)
+void solveLinearSystem(vector<vector<double>>& A, vector<double>& b, vector<double>& sol)
 {
     int n = A.size();
     
@@ -117,15 +117,15 @@ void solveLinearSystem(vector<vector<double>>& A, vector<double>& b, vector<doub
     }
 
     // Thay nguoc
-    x.resize(n);
+    sol.resize(n);
     for (int i = n - 1; i >= 0; i--)
     {
-        x[i] = augmented[i][n];
+        sol[i] = augmented[i][n];
         for (int j = i + 1; j < n; j++)
         {
-            x[i] -= augmented[i][j] * x[j];
+            sol[i] -= augmented[i][j] * sol[j];
         }
-        x[i] /= augmented[i][i];
+        sol[i] /= augmented[i][i];
     }
 }
 
@@ -134,12 +134,13 @@ void solveLinearSystem(vector<vector<double>>& A, vector<double>& b, vector<doub
 //   x, y, z: Bien can toi uu (truyen theo tham chieu)
 //   epsilon: Nguong sai so de dung (tolerance)
 //   max_iterations: So vong lap toi da
-void newtonMethod(double& x, double& y, double& z, double epsilon, int max_iterations)
+// Tra ve: So vong lap thuc te da thuc hien
+int newtonMethod(double& x, double& y, double& z, double epsilon, int max_iterations)
 {
     int iteration = 0;
     double norm_grad = 1e10;
 
-    cout << "Iteration | x         | y         | z         | f(x,y,z) | ||grad|| " << endl;
+    cout << "Vong lap | x         | y         | z         | f(x,y,z) | ||grad|| " << endl;
     cout << "---------|-----------|-----------|-----------|----------|----------" << endl;
 
     while (iteration < max_iterations && norm_grad > epsilon)
@@ -165,38 +166,51 @@ void newtonMethod(double& x, double& y, double& z, double epsilon, int max_itera
         computeHessian(x, y, z, H);
 
         // Giai he phuong trinh H * p = -g
-        vector<double> g = {gx, gy, gz};
-        for (int i = 0; i < 3; i++)
-        {
-            g[i] = -g[i];
-        }
+        vector<double> neg_g = {-gx, -gy, -gz};
 
         vector<double> p(3);
-        solveLinearSystem(H, g, p);
+        solveLinearSystem(H, neg_g, p);
 
-        // Cap nhat voi line search
+        // Kiem tra xem huong p co giam ham khong (p^T * g < 0)
+        double directional = p[0] * gx + p[1] * gy + p[2] * gz;
+        
+        // Neu khong phai descent direction, dung gradient descent
+        if (directional >= 0)
+        {
+            p[0] = -gx;
+            p[1] = -gy;
+            p[2] = -gz;
+            directional = -(gx * gx + gy * gy + gz * gz);
+        }
+
+        // Backtracking line search voi Armijo condition
         double alpha = 1.0;
         double f_old = f(x, y, z);
+        double c1 = 1e-4;  // Armijo parameter
         double x_new, y_new, z_new;
+        double f_new;
 
-        for (int ls = 0; ls < 20; ls++)
+        for (int ls = 0; ls < 30; ls++)
         {
             x_new = x + alpha * p[0];
             y_new = y + alpha * p[1];
             z_new = z + alpha * p[2];
 
-            double f_new = f(x_new, y_new, z_new);
+            f_new = f(x_new, y_new, z_new);
 
-            if (f_new < f_old)
+            // Armijo condition: f(x + alpha*p) <= f(x) + c1 * alpha * grad^T * p
+            if (f_new <= f_old + c1 * alpha * directional)
             {
-                x = x_new;
-                y = y_new;
-                z = z_new;
                 break;
             }
 
             alpha *= 0.5;
         }
+
+        // Cap nhat vi tri
+        x = x_new;
+        y = y_new;
+        z = z_new;
 
         iteration++;
     }
@@ -208,6 +222,8 @@ void newtonMethod(double& x, double& y, double& z, double epsilon, int max_itera
 
     printf("%9d | %9.5f | %9.5f | %9.5f | %8.5f | %8.2e\n",
            iteration, x, y, z, f(x, y, z), norm_grad);
+    
+    return iteration;
 }
 
 int main()
@@ -230,9 +246,10 @@ int main()
     cout << "Gia tri ban dau: f=" << f(x, y, z) << endl << endl;
 
     // Thuc hien thuat toan Newton
-    newtonMethod(x, y, z, epsilon, max_iterations);
+    int iterations_done = newtonMethod(x, y, z, epsilon, max_iterations);
 
     cout << "\n========== KET QUA ==========" << endl;
+    cout << "So vong lap thuc te: " << iterations_done << endl;
     cout << "Diem hoi tu:" << endl;
     cout << "  x = " << x << endl;
     cout << "  y = " << y << endl;

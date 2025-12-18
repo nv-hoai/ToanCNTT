@@ -36,13 +36,14 @@ double df_dz(double x, double y, double z)
 //   beta: He so momentum (quan tinh, thong thuong 0.9)
 //   epsilon: Nguong sai so de dung (tolerance)
 //   max_iterations: So vong lap toi da
-void momentumMethod(double& x, double& y, double& z, double gamma, double beta, double epsilon, int max_iterations)
+// Tra ve: So vong lap thuc te da thuc hien
+int momentumMethod(double& x, double& y, double& z, double gamma, double beta, double epsilon, int max_iterations)
 {
     double vx = 0.0, vy = 0.0, vz = 0.0;
     int iteration = 0;
     double norm_grad = 1e10;
 
-    cout << "Iteration | x         | y         | z         | f(x,y,z) | ||grad|| " << endl;
+    cout << "Vong lap | x         | y         | z         | f(x,y,z) | ||grad|| " << endl;
     cout << "---------|-----------|-----------|-----------|----------|----------" << endl;
 
     while (iteration < max_iterations && norm_grad > epsilon)
@@ -80,6 +81,8 @@ void momentumMethod(double& x, double& y, double& z, double gamma, double beta, 
 
     printf("%9d | %9.5f | %9.5f | %9.5f | %8.5f | %8.2e\n",
            iteration, x, y, z, f(x, y, z), norm_grad);
+    
+    return iteration;
 }
 
 int main()
@@ -106,10 +109,10 @@ int main()
     cout << "Gia tri ban dau: f=" << f(x, y, z) << endl << endl;
 
     // Thuc hien thuat toan Momentum
-    momentumMethod(x, y, z, gamma, beta, epsilon, max_iterations);
+    int iterations_done = momentumMethod(x, y, z, gamma, beta, epsilon, max_iterations);
 
     cout << "\n========== KET QUA ==========" << endl;
-    cout << "So vong lap: " << max_iterations << endl;
+    cout << "So vong lap: " << iterations_done << endl;
     cout << "Diem hoi tu:" << endl;
     cout << "  x = " << x << endl;
     cout << "  y = " << y << endl;

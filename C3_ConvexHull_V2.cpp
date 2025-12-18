@@ -245,23 +245,28 @@ void printPoint(const Point& p) {
     cout << "(" << fixed << setprecision(2) << p.x << ", " << p.y << ")";
 }
 
-int main(int argc, char* argv[]) {
-    vector<Point> points;
-
-    if (argc == 2) {
-        readFile(argv[1], points);
+int main() {
+    // Du lieu dau vao hardcoded
+    vector<Point> points = {
+        Point(0, 3),
+        Point(1, 1),
+        Point(2, 2),
+        Point(4, 4),
+        Point(0, 0),
+        Point(1, 2),
+        Point(3, 1),
+        Point(3, 3),
+        Point(2, 0),
+        Point(5, 2)
+    };
+    
+    cout << "So diem dau vao: " << points.size() << "\n";
+    cout << "Cac diem: ";
+    for (const Point& p : points) {
+        printPoint(p);
+        cout << " ";
     }
-    else
-    {
-        int n;
-        cout << "Nhap so luong diem n: ";
-        cin >> n;
-        
-        cout << "Nhap " << n << " diem (x y):\n";
-        for (int i = 0; i < n; i++) {
-            cin >> points[i].x >> points[i].y;
-        }
-    }
+    cout << "\n";
     
     cout << "\n=== GIAI BAI TOAN BAO LOI ===\n";
     

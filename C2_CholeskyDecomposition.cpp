@@ -78,6 +78,13 @@ int main()
     PrintMatrix(L1, "Ma tran L");
     printf("\n");
 
+    printf("Kiem tra: Nhan lai L * L^T:\n");
+    MatrixXd LLT = L1 * L1.transpose();
+    PrintMatrix(LLT, "L * L^T");
+    
+    double error1 = (A - LLT).norm();
+    printf("Sai so: %.2e %s\n\n", error1, error1 < 1e-10 ? "✓ Khop voi A" : "✗ Khong khop");
+
     // Variant Cholesky
     MatrixXd L2, D;
     VariantCholesky(A, L2, D);
@@ -85,6 +92,14 @@ int main()
     PrintMatrix(L2, "Ma tran L");
     printf("\n");
     PrintMatrix(D, "Ma tran D");
+    printf("\n");
+    
+    printf("Kiem tra: Nhan lai L * D * L^T:\n");
+    MatrixXd LDLT = L2 * D * L2.transpose();
+    PrintMatrix(LDLT, "L * D * L^T");
+    
+    double error2 = (A - LDLT).norm();
+    printf("Sai so: %.2e %s\n", error2, error2 < 1e-10 ? "✓ Khop voi A" : "✗ Khong khop");
     
     return 0;
 }

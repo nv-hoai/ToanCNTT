@@ -67,7 +67,6 @@ void LietKeUocSo(int n)
 
 void Print(const vector<int>& p, const vector<int>& a)
 {
-    printf("%d = ", p.empty() ? 1 : p[0]);
     for (size_t j = 0; j < p.size(); j++)
     {
         printf("%d^%d", p[j], a[j]);
@@ -87,6 +86,7 @@ int main()
     }
 
     PhanRaSNT(p, a, n);
+    printf("Phan tich thua so nguyen to cua %d: ", n);
     Print(p, a);
 
     printf("\n");

@@ -235,9 +235,14 @@ int main()
         ClassicalCholesky(A, L1);
         printf("Classical Cholesky (A = L*L^T):\n");
         PrintMatrix(L1, "L");
+        printf("\n");
 
+        printf("Kiem tra: Nhan lai L*L^T:\n");
+        MatrixXd LLT = L1 * L1.transpose();
+        PrintMatrix(LLT, "L*L^T");
+        
         bool isCorrect = verifyClassicalCholesky(A, L1);
-        printf("Kiem tra A = L*L^T: %s\n", isCorrect ? "✓ Dung" : "✗ Sai");
+        printf("Ket qua: %s (Sai so: %.2e)\n", isCorrect ? "✓ Khop voi A" : "✗ Khong khop", (A - LLT).norm());
         printf("\n");
     }
     else
@@ -256,9 +261,14 @@ int main()
         PrintMatrix(L2, "L");
         printf("\nMa tran D:\n");
         PrintMatrix(D, "D");
+        printf("\n");
 
+        printf("Kiem tra: Nhan lai L*D*L^T:\n");
+        MatrixXd LDLT = L2 * D * L2.transpose();
+        PrintMatrix(LDLT, "L*D*L^T");
+        
         bool isCorrect = verifyVariantCholesky(A, L2, D);
-        printf("Kiem tra A = L*D*L^T: %s\n", isCorrect ? "✓ Dung" : "✗ Sai");
+        printf("Ket qua: %s (Sai so: %.2e)\n", isCorrect ? "✓ Khop voi A" : "✗ Khong khop", (A - LDLT).norm());
         printf("\n");
     }
     else
@@ -284,13 +294,22 @@ int main()
         printf("Kiem tra A*v = λ*v:\n");
         for (int i = 0; i < n; i++)
         {
-            printf("Eigenvector %d: ", i + 1);
+            printf("\nEigenvector %d (\u03bb%d = %.4f):\n", i + 1, i + 1, eigenValues(i));
             VectorXd v = eigenVectors.col(i);
             VectorXd Av = A * v;
             VectorXd lambdaV = eigenValues(i) * v;
 
-            bool correct = (Av - lambdaV).norm() < 1e-5;
-            printf("%s\n", correct ? "✓" : "✗");
+            printf("  A*v = [");
+            for (int j = 0; j < n; j++) printf("%.4f%s", Av(j), j < n-1 ? ", " : "]");
+            printf("\n");
+            
+            printf("  λ*v = [");
+            for (int j = 0; j < n; j++) printf("%.4f%s", lambdaV(j), j < n-1 ? ", " : "]");
+            printf("\n");
+
+            double error = (Av - lambdaV).norm();
+            bool correct = error < 1e-5;
+            printf("  Sai so: %.2e %s\n", error, correct ? "✓" : "✗");
         }
     }
     else

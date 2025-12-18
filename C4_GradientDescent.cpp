@@ -30,30 +30,30 @@ double df_dz(double x, double y, double z)
 int main()
 {
     cout << fixed << setprecision(6);
-    cout << "========== GRADIENT DESCENT METHOD ==========" << endl;
-    cout << "Problem: Minimize f(x,y,z)" << endl
+    cout << "========== PHUONG PHAP GRADIENT DESCENT ==========" << endl;
+    cout << "Bai toan: Cuc tieu hoa f(x,y,z)" << endl
          << endl;
 
     // Tham so thuat toan
     double gamma = 0.02;      // Learning rate (buoc nhay, ty le hoc)
     double epsilon = 1e-5;    // Nguong sai so de dung (tolerance)
 
-    cout << "Parameters:" << endl;
+    cout << "Tham so:" << endl;
     cout << "  gamma (learning rate) = " << gamma << endl;
-    cout << "  epsilon (tolerance)   = " << epsilon << endl
+    cout << "  epsilon               = " << epsilon << endl
          << endl;
 
     double x = 1.0, y = 1.0, z = 1.0;
 
-    cout << "Initial point: x=" << x << ", y=" << y << ", z=" << z << endl;
-    cout << "Initial value: f=" << f(x, y, z) << endl
+    cout << "Diem bat dau: x=" << x << ", y=" << y << ", z=" << z << endl;
+    cout << "Gia tri ban dau: f=" << f(x, y, z) << endl
          << endl;
 
     int iteration = 0;
     int max_iterations = 10000;
     double norm_grad = 1e10;
 
-    cout << "Iteration | x         | y         | z         | f(x,y,z) | ||grad|| " << endl;
+    cout << "Vong lap | x         | y         | z         | f(x,y,z) | ||grad|| " << endl;
     cout << "---------|-----------|-----------|-----------|----------|----------" << endl;
 
     while (iteration < max_iterations && norm_grad > epsilon)
@@ -87,13 +87,13 @@ int main()
     printf("%9d | %9.5f | %9.5f | %9.5f | %8.5f | %8.2e\n",
            iteration, x, y, z, f(x, y, z), norm_grad);
 
-    cout << "\n========== RESULTS ==========" << endl;
-    cout << "Converged in " << iteration << " iterations" << endl;
-    cout << "Final point:" << endl;
+    cout << "\n========== KET QUA ==========" << endl;
+    cout << "Hoi tu sau " << iteration << " vong lap" << endl;
+    cout << "Diem toi uu:" << endl;
     cout << "  x = " << x << endl;
     cout << "  y = " << y << endl;
     cout << "  z = " << z << endl;
-    cout << "Minimum value: " << f(x, y, z) << endl;
+    cout << "Gia tri cuc tieu: " << f(x, y, z) << endl;
     cout << "||gradient|| = " << norm_grad << endl;
 
     return 0;
