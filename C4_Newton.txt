@@ -96,58 +96,43 @@ function hessian_f(x):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Thuật toán Newton (Phương pháp Newton-Raphson):
-- Phương pháp tối ưu bậc hai (second-order)
-- Sử dụng thông tin đạo hàm bậc 2 (Hessian)
+Thuật toán: Phương pháp Newton
+
+Input:
+• Hàm mục tiêu f(x), khả vi bậc 2
+• Điểm khởi tạo x₀ ∈ ℝⁿ
+• Ngưỡng hội tụ ε > 0
+• Số vòng lặp tối đa kₘₐₓ
+
+Khởi tạo:
+• x = x₀
+• k = 0
+
+Lặp:
+1. Tính gradient: g = ∇f(xₖ)
+
+2. Kiểm tra hội tụ:
+   - Nếu ||g|| < ε hoặc k > kₘₐₓ: dừng
+
+3. Tính Hessian: H = ∇²f(xₖ)
+   - H[i][j] = ∂²f/(∂xᵢ∂xⱼ)
+
+4. Giải hệ: H × d = -g
+   - Tìm hướng Newton d
+
+5. Line search (backtracking):
+   - α = 1.0
+   - Trong khi f(xₖ + αd) > f(xₖ) - c₁α||g||²:
+     * α = α × 0.5
+
+6. Cập nhật: xₖ₊₁ = xₖ + α × d
+
+7. k ← k + 1
 
 Ý tưởng:
-- Xấp xỉ bậc hai (quadratic approximation)
-- Tại mỗi điểm, xấp xỉ hàm bằng parabol
-- Nhảy thẳng tới đỉnh parabol (cực tiểu xấp xỉ)
-
-Thuật toán:
-
-Bước 1: Khởi tạo
-- Điểm xuất phát x₀
-- Ngưỡng hội tụ ε
-
-Bước 2: Lặp cho đến hội tụ:
-- Tính gradient: g = ∇f(xₖ)
-- Tính ma trận Hessian: H = ∇²f(xₖ)
-- Giải hệ: H × d = -g (tìm hướng Newton d)
-- Cập nhật: xₖ₊₁ = xₖ + d
-- Kiểm tra: ||g|| < ε hoặc ||d|| < ε
-
-Giải thích:
-
-1. Gradient ∇f: Hướng dốc nhất (bậc 1)
-2. Hessian ∇²f: Độ cong của hàm (bậc 2)
-   - Phần tử H[i][j] = ∂²f/(∂xᵢ∂xⱼ)
-   - Ma trận đối xứng n×n
-3. Hướng Newton d:
-   - H × d = -g
-   - Dừng Cholesky hoặc LU để giải
-
-Phân tích hội tụ:
-
-Gần cực tiểu:
-- Nếu H xác định dương (hàm lồi)
-- Hội tụ bậc 2 (quadratic convergence)
-- Số chữ số chính xác gấp đôi mỗi vòng
-
-Xa cực tiểu:
-- Có thể phân kỳ
-- Cần line search (tìm bước nhảy tối ưu)
-
-Cải tiến - Line Search:
-- Thay vì xₖ₊₁ = xₖ + d
-- Dùng xₖ₊₁ = xₖ + α × d
-- Tìm α để f(xₖ + αd) nhỏ nhất
-
-Các biến thể:
-
-1. Quasi-Newton (BFGS, L-BFGS):
-   - Xấp xỉ H thay vì tính chính xác
+- Xấp xỉ f(x) bằng parabol tại xₖ
+- Nhảy tới đỉnh parabol
+- Hội tụ bậc 2 (quadratic) khi gần nghiệm
    - Tiết kiệm tính toán
 
 2. Gauss-Newton:

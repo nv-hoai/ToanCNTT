@@ -45,18 +45,30 @@ Thuật toán Momentum (Gradient Descent với động lượng):
 - Tích lũy vận tốc từ các bước trước
 - Có thể vượt qua cực tiểu địa phương nhỏ
 
-Thuật toán:
+Thuật toán: Gradient Descent với Momentum
 
-Bước 1: Khởi tạo
-- Điểm xuất phát x₀
-- Vận tốc ban đầu v₀ = 0
-- Learning rate γ (bước nhảy)
-- Hệ số momentum β (thường 0.9)
+Input:
+• Hàm mục tiêu f(x), khả vi
+• Điểm khởi tạo x₀ ∈ ℝⁿ
+• Learning rate γ > 0
+• Momentum coefficient 0 ≤ β < 1
+• Ngưỡng hội tụ ε > 0
+• Số vòng lặp tối đa kₘₐₓ
 
-Bước 2: Lặp cho đến hội tụ:
-- Tính gradient hiện tại: gₖ = ∇f(xₖ)
-- Cập nhật vận tốc: vₖ₊₁ = β × vₖ - γ × gₖ
-- Cập nhật vị trí: xₖ₊₁ = xₖ + vₖ₊₁
+Khởi tạo:
+• v₀ = 0
+• k = 0
+
+Lặp:
+1. Tính gradient: gₖ = ∇f(xₖ)
+
+2. Cập nhật vận tốc: vₖ₊₁ = β×vₖ - γ×gₖ
+
+3. Cập nhật nghiệm: xₖ₊₁ = xₖ + vₖ₊₁
+
+4. Nếu ||gₖ|| < ε hoặc k > kₘₐₓ: dừng
+
+5. k ← k + 1
 
 Giải thích các thành phần:
 

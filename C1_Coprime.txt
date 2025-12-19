@@ -41,22 +41,27 @@ function findCoprime(n):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-1. Hàm Phi Euler:
-   - Bắt đầu với kết quả bằng n
-   - Duyệt qua tất cả các ước nguyên tố p của n từ 2 đến căn n
-   - Với mỗi ước nguyên tố p tìm được:
-     * Chia n cho p liên tục cho đến khi không chia hết
-     * Trừ đi một phần kết quả theo tỷ lệ 1/p
-   - Nếu sau khi chia hết các ước, n vẫn lớn hơn 1, thì n còn lại cũng là ước nguyên tố
-   - Trả về kết quả cuối cùng
+Thuật toán: Hàm Phi Euler φ(n)
 
-2. Ước chung lớn nhất (GCD):
-   - Lặp lại việc chia lấy dư cho đến khi số bị chia bằng 0
-   - Tại mỗi bước: số bé mới = phần dư, số lớn mới = số bé cũ
-   - Khi số bé = 0, số lớn chính là GCD
+Input:
+• Số nguyên dương n
 
-3. Tìm các số nguyên tố cùng nhau:
-   - Duyệt qua tất cả các số từ 1 đến n-1
-   - Với mỗi số i, tính GCD của i và n
-   - Nếu GCD = 1, thì i nguyên tố cùng nhau với n
-   - Thu thập tất cả các số thỏa mãn vào danh sách kết quả
+Khởi tạo:
+• result = n
+• p = 2
+
+Lặp:
+1. Trong khi p² ≤ n:
+   - Nếu n chia hết cho p:
+     * Chia n cho p đến khi không chia hết
+     * result = result - result/p
+   - p = p + 1
+
+2. Nếu n > 1:
+   - result = result - result/n
+
+3. Trả về result
+
+Công thức: φ(n) = n × ∏(1 - 1/p) với p là ước nguyên tố của n
+
+Ý nghĩa: φ(n) = số lượng số nguyên tố cùng nhau với n trong [1, n-1]

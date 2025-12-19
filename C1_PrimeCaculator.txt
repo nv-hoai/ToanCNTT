@@ -32,22 +32,22 @@ function findPrimesInRange(a, b):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-1. Kiểm tra số nguyên tố:
-   - Loại trừ các trường hợp đặc biệt:
-     * Số nhỏ hơn 2 không phải số nguyên tố
-     * Số 2 là số nguyên tố duy nhất chẵn
-     * Các số chẵn khác không phải số nguyên tố
-   - Với số lẻ từ 3 trở lên:
-     * Thử chia cho các số lẻ từ 3 đến căn bậc hai của n
-     * Nếu chia hết cho bất kỳ số nào → không phải số nguyên tố
-     * Nếu không chia hết cho số nào → là số nguyên tố
-   - Chỉ kiểm tra đến căn n vì: nếu n có ước lớn hơn căn n thì cũng phải có ước nhỏ hơn căn n
+Thuật toán: Kiểm tra số nguyên tố
 
-2. Tìm số nguyên tố trong đoạn [a, b]:
-   - Chuẩn bị danh sách rỗng để chứa kết quả
-   - Duyệt qua từng số trong đoạn từ a đến b
-   - Với mỗi số, kiểm tra xem có phải số nguyên tố không
-   - Nếu là số nguyên tố, thêm vào danh sách kết quả
-   - Trả về danh sách tất cả số nguyên tố tìm được
-   
-Lưu ý: Phương pháp này phù hợp khi đoạn [a,b] ngắn. Với đoạn dài, nên dùng Sàng Eratosthenes sẽ hiệu quả hơn.
+Input:
+• Số nguyên n
+
+Kiểm tra:
+1. Nếu n < 2: trả về false
+2. Nếu n = 2: trả về true
+3. Nếu n chẵn: trả về false
+
+Lặp:
+• Với i từ 3 đến √n (bước nhảy 2):
+  - Nếu n chia hết cho i: trả về false
+
+• Trả về true
+
+Giải thích:
+- Chỉ kiểm tra số lẻ vì số chẵn đã loại
+- Chỉ kiểm tra đến √n vì nếu n có ước > √n thì cũng có ước < √n

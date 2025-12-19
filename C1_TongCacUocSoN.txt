@@ -15,13 +15,23 @@ function sumOfDivisors(n):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Tính tổng các ước số của n:
-- Khởi tạo biến tổng bằng 0
-- Duyệt các số từ 1 đến căn bậc hai của n
-- Với mỗi số i, kiểm tra xem i có phải là ước của n không (n chia hết cho i)
-- Nếu i là ước số:
-  * Cộng i vào tổng
-  * Tính ước số đối ứng là n/i
-  * Nếu i khác n/i (tức không phải là căn bậc hai đúng của n), cũng cộng n/i vào tổng
-- Cách này tránh việc phải duyệt hết từ 1 đến n, chỉ cần duyệt đến căn n
-- Trả về tổng cuối cùng
+Thuật toán: Tính tổng các ước sỖ
+
+Input:
+• Số nguyên dương n
+
+Khởi tạo:
+• sum = 0
+
+Lặp:
+• Với i từ 1 đến √n:
+  - Nếu n chia hết cho i:
+    * sum = sum + i
+    * Nếu i ≠ n/i:
+      - sum = sum + n/i
+
+• Trả về sum
+
+Ví dụ: n = 12
+• Ước: {1, 2, 3, 4, 6, 12}
+• Tổng = 1+2+3+4+6+12 = 28

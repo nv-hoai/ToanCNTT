@@ -1,0 +1,14 @@
+sin(x) – sin
+cos(x) – cos
+tan(x) – tan
+asin(x) – arcsin (kết quả radian, x ∈[−1,1])
+acos(x) – arccos
+atan(x) – arctan (kết quả −π/2 đến π/2)
+
+log(x) – ln (logarit tự nhiên)
+log10(x) – log10 (logarit thập phân)
+exp(x) - e^x
+
+sqrt(x) - căn bậc 2
+cbrt(x) - căn bậc 3
+pow(x, y) - x^y

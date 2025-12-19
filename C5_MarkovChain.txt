@@ -64,60 +64,71 @@ function isStochasticMatrix(P, epsilon):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Chuỗi Markov (Markov Chain):
-- Mô hình xác suất mô tả chuỗi các sự kiện
-- Tính chất không nhớ: Tương lai chỉ phụ thuộc hiện tại, không phụ thuộc quá khứ
+Thuật toán: Chuỗi Markov
 
-Khái niệm cơ bản:
-- Trạng thái (state): Các tình huống có thể xảy ra
-- Ma trận chuyển P: P[i][j] = xác suất chuyển từ trạng thái i sang j
-- Phân phối xác suất π: π[i] = xác suất ở trạng thái i
+Khái niệm:
+• Trạng thái: S = {s₁, s₂, ..., sₖ}
+• Ma trận chuyển P: P[i][j] = P(sⱼ | sᵢ)
+• Phân phối π: π[i] = P(ở trạng thái sᵢ)
+• Tính chất: Tương lai chỉ phụ thuộc hiện tại
 
-Thuật toán 1: Tính phân phối sau k bước
-- Cho phân phối ban đầu π₀
-- Sau k bước: πₖ = π₀ × Pᵏ
-- Cách tính: Nhân ma trận lặp lại k lần
+---
 
-Ví dụ:
-- Thời tiết: {Nắng, Mưa}
-- P = [[0.7, 0.3],    // Nắng → Nắng (70%), Nắng → Mưa (30%)
-       [0.4, 0.6]]    // Mưa → Nắng (40%), Mưa → Mưa (60%)
-- Hôm nay nắng: π₀ = [1, 0]
-- Ngày mai: π₁ = π₀ × P = [0.7, 0.3]
+Thuật toán 1: Tính phân phối sau n bước
 
-Thuật toán 2: Tìm phân phối dừng (stationary distribution)
-- Định nghĩa: π × P = π (không thay đổi qua thời gian)
-- Phương pháp Power Iteration:
-  * Bắt đầu với π₀ bất kỳ (thường [1/n, 1/n, ..., 1/n])
-  * Lặp: πₖ₊₁ = πₖ × P
-  * Dừng khi ||πₖ₊₁ - πₖ|| < ε
+Input:
+• Phân phối ban đầu π₀
+• Ma trận chuyển P (k×k)
+• Số bước n
 
-Ý nghĩa phân phối dừng:
-- Xác suất "cân bằng" lâu dài
-- Sau thời gian đủ lâu, hệ thống ổn định
-- Không phụ thuộc trạng thái ban đầu (với chuỗi ergodic)
+Lặp:
+• Với i từ 1 đến n:
+  - π = π × P
 
-Điều kiện hội tụ:
-1. Irreducible: Đi được từ mọi trạng thái đến mọi trạng thái
-2. Aperiodic: Không có chu kỳ cố định
-3. Thường gọp nhất: Ma trận P chính quy (positive regular)
+• Trả về π
 
-Thuật toán 3: Kiểm tra ma trận chuyển hợp lệ
-- Mỗi phần tử: 0 ≤ P[i][j] ≤ 1
-- Mỗi hàng tổng = 1: Σⱼ P[i][j] = 1
-- Đây là ma trận ngẫu nhiên (stochastic matrix)
+Công thức: πₙ = π₀ × Pⁿ
 
-Tính chất quan trọng:
-1. P¹ × P² = P¹⁺² (nhân ma trận)
-2. Tổng xác suất = 1: Σᵢ πᵢ = 1
-3. Eigenvalue lớn nhất = 1
-4. Phân phối dừng = eigenvector ứng eigenvalue 1
+---
 
-Các loại chuỗi Markov:
+Thuật toán 2: Phân phối dừng (Stationary Distribution)
 
-1. Ergodic (công thái):
-   - Irreducible + aperiodic
-   - Có phân phối dừng duy nhất
+Input:
+• Ma trận chuyển P (k×k)
+• Ngưỡng ε > 0
+
+Khởi tạo:
+• π = [1/k, 1/k, ..., 1/k]
+
+Lặp:
+1. π_new = π × P
+
+2. Nếu ||π_new - π|| < ε: dừng
+
+3. π = π_new
+
+Định nghĩa: π × P = π (không đổi qua thời gian)
+
+---
+
+Thuật toán 3: Kiểm tra ma trận stochastic
+
+Input:
+• Ma trận P (k×k)
+
+Kiểm tra:
+1. Với i từ 0 đến k-1:
+   - Với j từ 0 đến k-1:
+     * Nếu P[i][j] < 0: trả về false
+   
+   - rowSum = Σⱼ P[i][j]
+   - Nếu |rowSum - 1.0| > ε: trả về false
+
+2. Trả về true
+
+Điều kiện:
+• Mọi phần tử ≥ 0
+• Mỗi hàng tổng = 1
    - Mọi trạng thái ban đầu đều hội tụ về π
 
 2. Absorbing (hấp thụ):

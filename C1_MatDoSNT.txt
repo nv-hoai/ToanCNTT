@@ -26,18 +26,23 @@ function primeDensity(n):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Tính mật độ số nguyên tố:
-- Mật độ số nguyên tố = (Số lượng SNT từ 2 đến n) / n
-- Cách tính:
-  * Bước 1: Sử dụng Sàng Eratosthenes để đánh dấu tất cả số nguyên tố từ 2 đến n
-  * Bước 2: Đếm có bao nhiêu số được đánh dấu là nguyên tố
-  * Bước 3: Chia số lượng cho n để được mật độ
+Thuật toán: Tính mật độ số nguyên tố
 
-Ý nghĩa của mật độ:
-- Mật độ cao nghĩa là có nhiều số nguyên tố trong khoảng đó
-- Theo định lý số nguyên tố: khi n càng lớn, mật độ xấp xỉ 1/ln(n)
-- Ví dụ: 
-  * Đến n=100: có 25 SNT → mật độ = 0.25 (25%)
-  * Đến n=1000: có 168 SNT → mật độ = 0.168 (16.8%)
-  * Đến n=10000: có 1229 SNT → mật độ = 0.1229 (12.29%)
-- Mật độ giảm dần khi n tăng, nhưng tổng số SNT vẫn tăng lên
+Input:
+• Số nguyên dương n
+
+Bước 1: Đếm số nguyên tố
+• Dùng Sàng Eratosthenes tìm tất cả SNT từ 2 đến n
+• Đếm số lượng: primeCount
+
+Bước 2: Tính mật độ
+• density = primeCount / n
+
+Công thức:
+• Mật độ = π(n) / n, với π(n) là số SNT ≤ n
+• Theo định lý số nguyên tố: π(n) ≈ n/ln(n)
+
+Ví dụ:
+• n = 100: 25 SNT → mật độ = 0.25 (25%)
+• n = 1000: 168 SNT → mật độ = 0.168 (16.8%)
+• n = 10000: 1229 SNT → mật độ = 0.1229 (12.29%)

@@ -16,15 +16,25 @@ function countDivisors(n):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Đếm số lượng ước số của n:
-- Khởi tạo biến đếm = 0
-- Duyệt tất cả các số từ 1 đến căn bậc hai của n
-- Tại mỗi số i, kiểm tra xem n có chia hết cho i không
-- Nếu chia hết (i là ước số):
-  * Trường hợp 1: i × i = n (i là căn bậc hai chính xác)
-    → Chỉ đếm 1 ước (vì i và n/i trùng nhau)
-  * Trường hợp 2: i × i < n (i nhỏ hơn căn n)
-    → Đếm 2 ước (i và n/i là hai ước khác nhau)
-- Lý do chỉ duyệt đến căn n: vì các ước luôn xuất hiện theo cặp đối xứng
-  Ví dụ: n=12 có ước {1,12}, {2,6}, {3,4} - mỗi cặp có tích bằng n
-- Trả về tổng số ước đếm được
+Thuật toán: Đếm số lượng ước số
+
+Input:
+• Số nguyên dương n
+
+Khởi tạo:
+• count = 0
+
+Lặp:
+• Với i từ 1 đến √n:
+  - Nếu n chia hết cho i:
+    * Nếu i² = n: count = count + 1
+    * Ngược lại: count = count + 2
+
+• Trả về count
+
+Giải thích:
+- Ước số xuất hiện theo cặp (i, n/i)
+- Nếu i² = n thì i và n/i trùng nhau → chỉ đếm 1
+
+Ví dụ: n = 12
+• Ước: {1,12}, {2,6}, {3,4} → tổng cộng 6 ước

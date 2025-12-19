@@ -79,55 +79,46 @@ function gradientL(x, lambda, rho):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Phương pháp Lagrange nhân tử tăng cường (Augmented Lagrangian Method - ALM):
-- Giải bài toán tối ưu có ràng buộc
-- Kết hợp Lagrange multipliers và penalty method
+Thuật toán: Augmented Lagrangian Method
 
-Bài toán gốc:
-- Minimize: f(x)
-- Subject to: h(x) = 0 (ràng buộc đẳng thức)
-
-Ý tưởng:
-1. Lagrange multipliers: Biến ràng buộc thành hàm mục tiêu
-2. Penalty: Phạt vi phạm ràng buộc
-3. Kết hợp: Lagrangian tăng cường
+Bài toán:
+• Minimize f(x)
+• Subject to h(x) = 0
 
 Hàm Lagrangian tăng cường:
-L(x, λ, ρ) = f(x) - λᵀh(x) + (ρ/2)||h(x)||²
+• L(x, λ, ρ) = f(x) - λᵀh(x) + (ρ/2)||h(x)||²
 
-Các thành phần:
-1. f(x): Hàm mục tiêu gốc
-2. -λᵀh(x): Thành phần Lagrange
-3. (ρ/2)||h(x)||²: Thành phần penalty
+Input:
+• Điểm khởi tạo x₀
+• Nhân tử Lagrange ban đầu λ₀
+• Tham số penalty ρ₀ > 0
 
-Thuật toán:
+Khởi tạo:
+• x = x₀
+• λ = λ₀ (thường = 0)
+• ρ = ρ₀
 
-Bước 1: Khởi tạo
-- x₀: Điểm xuất phát
-- λ₀ = 0: Nhân tử Lagrange ban đầu
-- ρ₀ > 0: Tham số penalty ban đầu
+Lặp vòng ngoài:
+1. Giải bài toán con:
+   - x = argmin L(x, λ, ρ)
+   - Dùng Gradient Descent hoặc Newton
 
-Bước 2: Vòng ngoài (cập nhật λ và ρ):
-Repeat until ||h(x)|| < ε:
+2. Tính ràng buộc: h_val = h(x)
 
-  Bước 2a: Vòng trong (tối ưu x)
-  - Minimize L(x, λₖ, ρₖ) theo x
-  - Dùng Gradient Descent hoặc Newton
-  - Kết quả: xₖ₊₁
-  
-  Bước 2b: Cập nhật nhân tử Lagrange
-  - λₖ₊₁ = λₖ - ρₖ × h(xₖ₊a)
-  - Hướng cải thiện đối ngẫu (dual improvement)
-  
-  Bước 2c: Tăng penalty (nếu cần)
-  - Nếu ||h(xₖ₊₁)|| không giảm đủ:
-    * ρₖ₊₁ = γ × ρₖ (ví dụ γ = 2)
-  - Ngược lại:
-    * ρₖ₊₁ = ρₖ
+3. Kiểm tra hội tụ:
+   - Nếu |h_val| < ε: dừng
 
-Giải thích cơ chế:
+4. Cập nhật Lagrange multiplier:
+   - λ = λ - ρ × h_val
 
-1. Thành phần Lagrange -λᵀh(x):
+5. Tăng penalty nếu cần:
+   - Nếu |h_val| > 0.25 × |h_prev|:
+     * ρ = min(ρ × 10, ρₘₐₓ)
+
+Ý tưởng:
+- Kết hợp Lagrange multipliers và penalty
+- Vòng ngoài: cập nhật λ, ρ
+- Vòng trong: tối ưu x
    - Đưa thông tin đối ngẫu (dual)
    - Hướng dẫn cách thỏa mãn ràng buộc
 

@@ -19,18 +19,25 @@ function countDivisors(n):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Tính tích các ước số của n:
-- Ý tưởng: Tích các ước số = n^(số_ước_số / 2)
-- Ví dụ: n=6 có ước là {1,2,3,6}, tích = 1×2×3×6 = 36 = 6^(4/2) = 6^2
-- Giải thích công thức:
-  * Các ước số luôn xuất hiện theo cặp: nếu i là ước thì n/i cũng là ước
-  * Tích mỗi cặp = i × (n/i) = n
-  * Nếu có k ước số thì có k/2 cặp
-  * Tích tất cả = n^(k/2)
+Thuật toán: Tính tích các ước số
 
-Đếm số ước số:
-- Duyệt các số từ 1 đến căn n
-- Với mỗi số i là ước số:
-  * Nếu i² = n (i là căn bậc hai đúng): đếm 1 ước
-  * Nếu i² < n: đếm 2 ước (i và n/i)
-- Tổng số ước tìm được chính là số lượng ước số của n
+Input:
+• Số nguyên dương n
+
+Công thức:
+• Tích = n^(k/2), với k là số lượng ước số
+
+Bước 1: Đếm số ước
+• k = countDivisors(n)
+
+Bước 2: Tính tích
+• product = n^(k/2)
+
+Giải thích:
+- Ước số xuất hiện theo cặp (i, n/i)
+- Tích mỗi cặp = i × (n/i) = n
+- Nếu có k ước → có k/2 cặp → tích = n^(k/2)
+
+Ví dụ: n = 6
+• Ước: {1, 2, 3, 6} → k = 4
+• Tích = 1×2×3×6 = 36 = 6^(4/2) = 6²

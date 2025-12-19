@@ -36,16 +36,39 @@ function primeFactorization(n):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Phân tích số thành thừa số nguyên tố kèm số mũ:
-- Chuẩn bị hai danh sách: một cho các thừa số nguyên tố, một cho số mũ tương ứng
-- Bước 1: Xử lý ước số 2
-  * Đếm xem n chia hết cho 2 bao nhiêu lần
-  * Nếu chia hết ít nhất 1 lần, thêm 2 vào danh sách thừa số và số lần vào danh sách số mũ
-- Bước 2: Xử lý các ước số lẻ từ 3 trở đi
-  * Với mỗi số lẻ i từ 3 đến căn n
-  * Đếm xem n chia hết cho i bao nhiêu lần
-  * Nếu chia hết ít nhất 1 lần, ghi lại i và số lần chia
-- Bước 3: Xử lý phần còn lại
-  * Sau khi chia hết các ước nhỏ hơn căn n
-  * Nếu n vẫn lớn hơn 1, thì n còn lại chính là một thừa số nguyên tố với số mũ là 1
-- Kết quả trả về cặp danh sách (thừa số, số mũ)
+Thuật toán: Phân tích thừa số nguyên tố (kèm số mũ)
+
+Input:
+• Số nguyên dương n
+
+Khởi tạo:
+• factors = []
+• exponents = []
+
+Lặp:
+1. Xử lý ước số 2:
+   - count = 0
+   - Trong khi n chia hết cho 2:
+     * count++
+     * n = n / 2
+   - Nếu count > 0:
+     * Thêm 2 vào factors
+     * Thêm count vào exponents
+
+2. Xử lý các ước lẻ:
+   - Với i từ 3 đến √n (bước nhảy 2):
+     * count = 0
+     * Trong khi n chia hết cho i:
+       - count++
+       - n = n / i
+     * Nếu count > 0:
+       - Thêm i vào factors
+       - Thêm count vào exponents
+
+3. Nếu n > 1:
+   - Thêm n vào factors
+   - Thêm 1 vào exponents
+
+Ví dụ: n = 360 = 2³ × 3² × 5
+• factors = [2, 3, 5]
+• exponents = [3, 2, 1]

@@ -26,17 +26,27 @@ function findPerfectNumbers(limit):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Tìm tất cả số hoàn hảo đến giới hạn cho trước:
-- Chuẩn bị danh sách rỗng để lưu các số hoàn hảo
-- Duyệt qua từng số từ 2 đến giới hạn (limit)
-- Với mỗi số, kiểm tra xem có phải số hoàn hảo không bằng cách:
-  * Tính tổng tất cả ước số thực sự (không tính chính nó)
-  * So sánh tổng với chính số đó
-  * Nếu bằng nhau → là số hoàn hảo, thêm vào danh sách
-- Trả về danh sách tất cả số hoàn hảo tìm được
+Thuật toán: Tìm số hoàn hảo
 
-Lưu ý về số hoàn hảo:
-- Các số hoàn hảo rất hiếm: 6, 28, 496, 8128, ...
-- Đến nay mới biết 51 số hoàn hảo
-- Tất cả số hoàn hảo đã biết đều là số chẵn
-- Chưa biết có tồn tại số hoàn hảo lẻ hay không
+Input:
+• Số nguyên dương n
+
+Định nghĩa: Số hoàn hảo là số bằng tổng các ước thực sự của nó
+
+Kiểm tra:
+1. Nếu n ≤ 1: trả về false
+
+2. Khởi tạo sum = 1
+
+3. Với i từ 2 đến √n:
+   - Nếu n chia hết cho i:
+     * sum = sum + i
+     * Nếu i ≠ n/i: sum = sum + n/i
+
+4. Trả về (sum == n)
+
+Ví dụ:
+• n = 6: ước thực sự là {1, 2, 3}, tổng = 6 → số hoàn hảo
+• n = 28: ước thực sự là {1, 2, 4, 7, 14}, tổng = 28 → số hoàn hảo
+
+Lưu ý: Số hoàn hảo rất hiếm (6, 28, 496, 8128, ...)

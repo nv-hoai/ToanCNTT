@@ -38,23 +38,24 @@ function primesInRange(a, b):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-1. Thuật toán Sàng Eratosthenes:
-   - Chuẩn bị một mảng đánh dấu, ban đầu giả định tất cả các số từ 2 đến n đều là số nguyên tố
-   - Đánh dấu 0 và 1 không phải là số nguyên tố
-   - Bắt đầu từ số nguyên tố nhỏ nhất là 2:
-     * Giữ nguyên 2 là số nguyên tố
-     * Loại bỏ tất cả bội số của 2: 4, 6, 8, 10, ...
-   - Chuyển sang số nguyên tố tiếp theo còn lại (3):
-     * Giữ nguyên 3 là số nguyên tố
-     * Loại bỏ tất cả bội số của 3: 9, 12, 15, ... (6 đã bị loại ở bước trước)
-   - Lặp lại quá trình cho đến khi duyệt hết các số đến căn n
-   - Tất cả các số còn được đánh dấu là số nguyên tố chính là kết quả
-   
-2. Tìm số nguyên tố trong đoạn [a, b]:
-   - Sử dụng sàng Eratosthenes để tìm tất cả số nguyên tố từ 2 đến b
-   - Lọc ra những số nguyên tố có giá trị từ a trở lên
-   - Trả về danh sách các số nguyên tố trong khoảng [a, b]
-   
-Giải thích tối ưu:
-- Chỉ cần duyệt đến căn n vì: nếu n có ước lớn hơn căn n, thì n cũng phải có ước nhỏ hơn căn n
-- Khi loại bội số của p, bắt đầu từ p² vì các bội nhỏ hơn đã được loại ở các vòng trước
+Thuật toán: Sàng Eratosthenes
+
+Input:
+• Số nguyên dương n
+
+Khởi tạo:
+• Mảng isPrime[0..n] = true
+• isPrime[0] = isPrime[1] = false
+
+Lặp:
+1. Với mỗi p từ 2 đến √n:
+   - Nếu isPrime[p] = true:
+     * Đánh dấu tất cả bội số của p (từ p² đến n) là false
+     
+2. Thu thập kết quả:
+   - Duyệt i từ 2 đến n
+   - Nếu isPrime[i] = true, thêm i vào danh sách kết quả
+
+Giải thích:
+- Chỉ duyệt đến √n vì nếu n có ước > √n thì cũng có ước < √n
+- Bắt đầu loại từ p² vì các bội nhỏ hơn đã được loại ở vòng trước

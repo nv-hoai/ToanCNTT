@@ -60,22 +60,29 @@ function findNearestPrime(target):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-1. Phân tích số thành thừa số nguyên tố:
-   - Đầu tiên xử lý ước số 2: liên tục chia n cho 2 và ghi lại số lần chia
-   - Sau đó xử lý các ước số lẻ: duyệt các số lẻ từ 3 đến căn n
-   - Với mỗi ước số tìm được, chia liên tục cho đến khi không chia hết
-   - Sau khi chia hết tất cả ước số nhỏ hơn căn n, nếu n vẫn lớn hơn 1 thì n còn lại chính là một thừa số nguyên tố
-   - Thu thập tất cả các thừa số nguyên tố tìm được
+Thuật toán: Phân tích thừa số nguyên tố
 
-2. Kiểm tra số nguyên tố:
-   - Loại trừ các trường hợp đặc biệt: số nhỏ hơn 2 không phải SNT, 2 là SNT duy nhất chẵn
-   - Với các số khác, kiểm tra xem có chia hết cho số nào từ 3 đến căn n không
-   - Chỉ cần kiểm tra các số lẻ (bước nhảy 2) vì số chẵn đã loại trừ
-   - Nếu không tìm thấy ước số nào, đó là số nguyên tố
+Input:
+• Số nguyên dương n
 
-3. Tìm số nguyên tố gần nhất:
-   - Bắt đầu từ số cần tìm, mở rộng sang hai phía: nhỏ hơn và lớn hơn
-   - Tại mỗi bước, kiểm tra số phía dưới (target - 1, target - 2, ...)
-   - Đồng thời kiểm tra số phía trên (target + 1, target + 2, ...)
-   - Số nguyên tố nào tìm được trước sẽ là số nguyên tố gần nhất
-   - Ưu tiên số nhỏ hơn nếu cả hai cách đều xa như nhau
+Khởi tạo:
+• factors = []
+
+Lặp:
+1. Trong khi n chia hết cho 2:
+   - Thêm 2 vào factors
+   - n = n / 2
+
+2. Với i từ 3 đến √n (bước nhảy 2):
+   - Trong khi n chia hết cho i:
+     * Thêm i vào factors
+     * n = n / i
+
+3. Nếu n > 1:
+   - Thêm n vào factors (n là thừa số nguyên tố cuối)
+
+4. Trả về factors
+
+Ví dụ: n = 60
+• 60 = 2² × 3 × 5
+• factors = [2, 2, 3, 5]

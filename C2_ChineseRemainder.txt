@@ -36,34 +36,35 @@ function chineseRemainder(remainders, moduli):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Định lý thặng dư Trung Hoa (Chinese Remainder Theorem):
-- Bài toán: Tìm số x thỏa mãn đồng thời nhiều phương trình đồng dư
-  * x ≡ a₁ (mod m₁)
-  * x ≡ a₂ (mod m₂)
-  * ...
-  * x ≡ aₙ (mod mₙ)
-  với điều kiện các mᵢ đôi một nguyên tố cùng nhau
+Thuật toán: Định lý Thặng dư Trung Hoa
 
-Thuật toán giải:
+Input:
+• Mảng remainders: [a₁, a₂, ..., aₙ]
+• Mảng moduli: [m₁, m₂, ..., mₙ]
+• Điều kiện: gcd(mᵢ, mⱼ) = 1 ∀i≠j
 
-Bước 1: Tính tích tất cả các modulo
-- M = m₁ × m₂ × ... × mₙ
-- Đây là chu kỳ của nghiệm
+Bài toán: Tìm x thỏa mãn:
+• x ≡ a₁ (mod m₁)
+• x ≡ a₂ (mod m₂)
+• ...
+• x ≡ aₙ (mod mₙ)
 
-Bước 2: Với mỗi phương trình thứ i:
-- Tính Mᵢ = M / mᵢ (tích tất cả modulo trừ mᵢ)
-- Tìm nghịch đảo modular yᵢ của Mᵢ theo mᵢ
-  * yᵢ × Mᵢ ≡ 1 (mod mᵢ)
-  * Dùng thuật toán Euclid mở rộng để tìm yᵢ
+Khởi tạo:
+• M = m₁ × m₂ × ... × mₙ
+• x = 0
 
-Bước 3: Kết hợp các nghiệm riêng
-- x = Σ(aᵢ × Mᵢ × yᵢ) mod M
-- Đây là nghiệm nhỏ nhất không âm
+Lặp:
+1. Với i từ 0 đến n-1:
+   - Mᵢ = M / mᵢ
+   - yᵢ = modularInverse(Mᵢ, mᵢ)
+     * Tìm yᵢ sao cho: yᵢ × Mᵢ ≡ 1 (mod mᵢ)
+     * Dùng thuật toán Euclid mở rộng
+   - x = x + aᵢ × Mᵢ × yᵢ
 
-Ví dụ minh họa:
-- x ≡ 2 (mod 3), x ≡ 3 (mod 5), x ≡ 2 (mod 7)
-- M = 3×5×7 = 105
-- M₁=35, M₂=21, M₃=15
-- Tìm y₁, y₂, y₃ rồi tính x = (2×35×y₁ + 3×21×y₂ + 2×15×y₃) mod 105
+2. Trả về: x mod M
 
-Ứng dụng: Mã hóa RSA, tính toán phân tán, lịch vạn niên
+Ví dụ:
+• x ≡ 2 (mod 3)
+• x ≡ 3 (mod 5)
+• x ≡ 2 (mod 7)
+• M = 105, nghiệm: x = 23

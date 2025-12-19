@@ -43,32 +43,32 @@ function solveCubic(a, b, c, d):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Giải phương trình bậc 3 bằng công thức Cardano:
-- Phương trình tổng quát: ax³ + bx² + cx + d = 0
+Thuật toán: Cardano (Giải phương trình bậc 3)
 
-Bước 1: Chuyển về dạng chuẩn
-- Chia tất cả các hệ số cho a
-- Đổi biến để khử hệ số bậc 2, được phương trình dạng: t³ + pt + q = 0
-- Trong đó: p và q được tính từ a, b, c, d
+Input:
+• Hệ số a, b, c, d của phương trình ax³ + bx² + cx + d = 0
 
-Bước 2: Tính biệt thức (discriminant)
-- Delta = -(4p³ + 27q²)
-- Delta quyết định số nghiệm thực của phương trình
+Bước 1: Chuyển về dạng chuẩn t³ + pt + q = 0
+• p = (3ac - b²)/(3a²)
+• q = (2b³ - 9abc + 27a²d)/(27a³)
 
-Bước 3: Xét các trường hợp
-- Trường hợp 1: Delta > 0 (3 nghiệm thực phân biệt)
-  * Tính r = căn bậc hai của (-p/3)
-  * Tính góc theta từ công thức lượng giác
-  * Ba nghiệm được tính bằng công thức cos với các góc khác nhau
-  * Chuyển về nghiệm gốc bằng cách trừ đi b/(3a)
+Bước 2: Tính biệt thức
+• Δ = -(4p³ + 27q²)
 
-- Trường hợp 2: Delta = 0 (có nghiệm bội)
-  * Một nghiệm đơn và một nghiệm kép
-  * Tính trực tiếp từ p và q
+Bước 3: Phân loại nghiệm
+• Nếu Δ > 0: 3 nghiệm thực phân biệt
+  - r = √(-p/3)
+  - θ = arccos(-q/(2r³))/3
+  - t₁ = 2r cos(θ)
+  - t₂ = 2r cos(θ + 2π/3)
+  - t₃ = 2r cos(θ + 4π/3)
+  - xᵢ = tᵢ - b/(3a)
 
-- Trường hợp 3: Delta < 0 (1 nghiệm thực, 2 nghiệm phức)
-  * Tính u và v bằng công thức căn bậc ba
-  * Nghiệm thực x = u + v - b/(3a)
-  * Hai nghiệm phức liên hợp
+• Nếu Δ = 0: Nghiệm bội
+  - x₁ = 3q/p - b/(3a)
+  - x₂ = x₃ = -3q/(2p) - b/(3a)
 
-Lưu ý: Công thức Cardano là công thức đại số đóng để giải phương trình bậc 3
+• Nếu Δ < 0: 1 nghiệm thực, 2 nghiệm phức
+  - u = ∛(-q/2 + √(-Δ/108))
+  - v = ∛(-q/2 - √(-Δ/108))
+  - x = u + v - b/(3a)

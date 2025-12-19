@@ -43,26 +43,26 @@ void computeHessian(double x, double y, double z, vector<vector<double>>& H)
     double yy2 = yy1 * yy1;
 
     // d2f/dx2
-    H[0][0] = (y * y + z * z) / r4 - y * y * sin(x * y) + 2.0 / yy1;
+    H[0][0] = (y * y + z * z - x * x) / r4 - y * y * sin(x * y) + 2.0 / yy1;
 
     // d2f/dxdy
-    H[0][1] = -x * y / r4 + cos(x * y) - x * y * sin(x * y) - 4.0 * (x - z) * y / yy2;
+    H[0][1] = -2.0 * x * y / r4 + cos(x * y) - x * y * sin(x * y) - 4.0 * (x - z) * y / yy2;
     H[1][0] = H[0][1];
 
     // d2f/dxdz
-    H[0][2] = -x * z / r4 - 2.0 / yy1;
+    H[0][2] = -2.0 * x * z / r4 - 2.0 / yy1;
     H[2][0] = H[0][2];
 
     // d2f/dy2
-    H[1][1] = (x * x + z * z) / r4 - x * x * sin(x * y) - cos(y + z) / 5.0 
+    H[1][1] = (x * x + z * z - y * y) / r4 - x * x * sin(x * y) - cos(y + z) / 5.0 
               - 2.0 * (x - z) * (x - z) * (1.0 - 3.0 * y * y) / (yy2 * yy1);
 
     // d2f/dydz
-    H[1][2] = -y * z / r4 - cos(y + z) / 5.0 + 4.0 * (x - z) * y / yy2;
+    H[1][2] = -2.0 * y * z / r4 - cos(y + z) / 5.0 + 4.0 * (x - z) * y / yy2;
     H[2][1] = H[1][2];
 
     // d2f/dz2
-    H[2][2] = (x * x + y * y) / r4 - cos(y + z) / 5.0 + 2.0 / yy1;
+    H[2][2] = (x * x + y * y - z * z) / r4 - cos(y + z) / 5.0 + 2.0 / yy1;
 }
 
 // Giai he phuong trinh tuyen tinh H * p = -g bang Gaussian elimination

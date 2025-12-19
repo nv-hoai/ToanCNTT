@@ -52,42 +52,49 @@ function variantCholesky(A):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Phân tích Cholesky (Cholesky Decomposition):
-- Mục đích: Phân tích ma trận đối xứng xác định dương A thành tích A = L × Lᵀ
-- L là ma trận tam giác dưới với các phần tử đường chéo dương
+Thuật toán: Phân tích Cholesky
 
-Điều kiện áp dụng:
-- Ma trận A phải đối xứng (A = Aᵀ)
-- Ma trận A phải xác định dương (tất cả trị riêng > 0)
-- Tương đương: tất cả định thức con chính > 0
+Input:
+• Ma trận A (n×n), đối xứng, xác định dương
 
-Thuật toán cổ điển - tính từng phần tử:
+Điều kiện:
+• A = Aᵀ (đối xứng)
+• Tất cả trị riêng > 0 (xác định dương)
 
-Bước 1: Tính các phần tử trên đường chéo
-- L[i][i] = √(A[i][i] - Σⱼ₌₀^(i-1) L[i][j]²)
-- Trừ đi tổng bình phương các phần tử cùng hàng bên trái
-- Lấy căn bậc hai kết quả
+Phân tích: A = L × Lᵀ
 
-Bước 2: Tính các phần tử dưới đường chéo
-- L[i][j] = (A[i][j] - Σₖ₌₀^(j-1) L[i][k]×L[j][k]) / L[j][j]
-- Trừ đi tổng tích các phần tử tương ứng
-- Chia cho phần tử đường chéo của cột j
+Lặp:
+1. Với i từ 0 đến n-1:
+   - Với j từ 0 đến i:
+     * sum = Σₖ₌₀^(j-1) L[i][k] × L[j][k]
+     
+     * Nếu i = j:
+       - L[i][j] = √(A[i][i] - sum)
+     
+     * Nếu i ≠ j:
+       - L[i][j] = (A[i][j] - sum) / L[j][j]
 
-Bước 3: Các phần tử trên đường chéo = 0
+---
 
-Thuật toán biến thể (LDLᵀ Decomposition) - tính từng phần tử:
+Thuật toán: Phân tích LDLᵀ (biến thể)
 
-Khái niệm:
-- Phân tích thành A = L × D × Lᵀ
-- L là ma trận tam giác dưới có đường chéo = 1
-- D là ma trận đường chéo (chứa các giá trị dương)
+Input:
+• Ma trận A (n×n), đối xứng, xác định dương
 
-Bước 1: Tính các phần tử đường chéo của D
-- D[i][i] = A[i][i] - Σₖ₌₀^(i-1) L[i][k]² × D[k][k]
-- Trừ đi tổng của (L[i][k] bình phương nhân D[k][k])
-- Kết quả là giá trị đường chéo thứ i của ma trận D
+Phân tích: A = L × D × Lᵀ
+• L: tam giác dưới, đường chéo = 1
+• D: ma trận đường chéo
 
-Bước 2: Tính các phần tử dưới đường chéo của L
+Lặp:
+1. Với i từ 0 đến n-1:
+   - Với j từ 0 đến i:
+     * sum = Σₖ₌₀^(j-1) L[i][k] × D[k][k] × L[j][k]
+     
+     * Nếu i = j:
+       - D[i][i] = A[i][i] - sum
+     
+     * Nếu i ≠ j:
+       - L[i][j] = (A[i][j] - sum) / D[j][j]
 - L[i][j] = (A[i][j] - Σₖ₌₀^(j-1) L[i][k] × D[k][k] × L[j][k]) / D[j][j]
 - Trừ đi tổng tích có trọng số D[k][k]
 - Chia cho phần tử đường chéo D[j][j]

@@ -31,53 +31,37 @@ function gradientDescent(x0, gamma, epsilon, maxIter):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Thuật toán Gradient Descent (Hạ gradient):
-- Phương pháp tối ưu cơ bản nhất và quan trọng nhất
-- Mục tiêu: Tìm điểm cực tiểu của hàm f(x)
+Thuật toán: Gradient Descent
 
-Ý tưởng chính:
-- Giống như đi xuống núi trong sương mù: luôn chọn hướng dốc nhất
-- Gradient chỉ hướng tăng nhanh nhất → đi ngược lại để giảm
+Input:
+• Hàm mục tiêu f(x), khả vi
+• Điểm khởi tạo x₀ ∈ ℝⁿ
+• Learning rate γ > 0
+• Ngưỡng hội tụ ε > 0
+• Số vòng lặp tối đa kₘₐₓ
 
-Thuật toán:
+Khởi tạo:
+• x = x₀
+• k = 0
 
-Bước 1: Khởi tạo
-- Chọn điểm xuất phát x₀ (ngẫu nhiên hoặc ước lượng)
-- Đặt learning rate γ (bước nhảy)
+Lặp:
+1. Tính gradient: gₖ = ∇f(xₖ)
 
-Bước 2: Lặp cho đến hội tụ:
-- Tính gradient tại vị trí hiện tại: ∇f(xₖ)
-- Cập nhật: xₖ₊₁ = xₖ - γ × ∇f(xₖ)
-- Kiểm tra dừng: ||∇f(x)|| < ε hoặc |Δx| < ε
+2. Kiểm tra hội tụ:
+   - Nếu ||gₖ|| < ε hoặc k > kₘₐₓ: dừng
 
-Giải thích công thức:
-- ∇f(x): Vector hướng tăng nhanh nhất
-- -∇f(x): Hướng giảm nhanh nhất
-- γ: Độ dài bước nhảy
+3. Cập nhật: xₖ₊₁ = xₖ - γ × gₖ
 
-Chọn Learning Rate γ:
-- Quá nhỏ: Hội tụ chậm, tốn nhiều vòng lặp
-- Quá lớn: Dao động, không hội tụ
-- Vừa phải: Hội tụ ổn định
+4. k = k + 1
 
-Các biến thể:
-1. Batch GD: Dùng toàn bộ dữ liệu mỗi lần
-2. Stochastic GD: Dùng 1 điểm dữ liệu
-3. Mini-batch GD: Dùng một batch nhỏ
+Ý tưởng:
+- Gradient ∇f(x) chỉ hướng tăng nhanh nhất
+- Di chuyển ngược hướng gradient để giảm f(x)
 
-Ưu điểm:
-- Đơn giản, dễ hiểu
-- Phù hợp hàm lồi (convex)
-- Tốn ít bộ nhớ
-
-Nhược điểm:
-- Hội tụ chậm với hàm phẳng
-- Có thể kẹt tại cực tiểu địa phương
-- Nhạy cảm với γ
-
-Ứng dụng:
-- Hầu hết thuật toán Machine Learning
-- Neural Networks (backpropagation)
+Chọn γ:
+- γ nhỏ: hội tụ chậm
+- γ lớn: dao động
+- Thường dùng: 0.001, 0.01, 0.1
 - Logistic Regression
 - Tối ưu phi tuyến
 // Gamma qua nho: hoi tu cham

@@ -16,17 +16,17 @@ double h(double x, double y, double z)
 
 double df_dx(double x, double y, double z)
 {
-    return 2 * (x - 1) + 0.1 * cos(x + y + z);
+    return 2*x + 0.1*cos(x + y + z) - 2;
 }
 
 double df_dy(double x, double y, double z)
 {
-    return 2 * (y - 2) + 0.1 * cos(x + y + z);
+    return 2*y + 0.1*cos(x + y + z) - 4;
 }
 
 double df_dz(double x, double y, double z)
 {
-    return 2 * (z - 1) + 0.1 * cos(x + y + z);
+    return 2*z + 0.1*cos(x + y + z) - 2;
 }
 
 const double dh_dx = 2.0;

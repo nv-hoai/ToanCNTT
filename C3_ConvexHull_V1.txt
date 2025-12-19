@@ -86,72 +86,60 @@ function closestPair(px, py, n):
 
 MÔ TẢ BẰNG NGÔN NGỮ TỰ NHIÊN:
 
-Bài toán hình học tính toán (Computational Geometry):
+Thuật toán: Bao lồi Andrew's Monotone Chain
 
-Thuật toán 1: Bao lồi (Convex Hull) - Graham Scan
-- Mục đích: Tìm đa giác lồi nhỏ nhất bao quanh tất cả các điểm
-- Hình dung: Giống như kéo dây chuòng thắng quanh các cọc
+Input:
+• Danh sách điểm points = [(x₁,y₁), (x₂,y₂), ..., (xₙ,yₙ)]
 
-Các bước:
+Khởi tạo:
+• Sắp xếp points theo (x, y) tăng dần
 
-Bước 1: Tìm điểm mốc
-- Tìm điểm thấp nhất (y nhỏ nhất, nếu bằng nhau thì x nhỏ nhất)
-- Điểm này chắc chắn thuộc bao lồi
+Lặp:
+1. Xây dựng nửa dưới (lower hull):
+   - Với mỗi điểm p:
+     * Trong khi có ≥ 2 điểm trong lower và rẽ phải:
+       - Loại điểm cuối
+     * Thêm p vào lower
 
-Bước 2: Sắp xếp các điểm theo góc cực
-- Tính góc cực từ điểm mốc đến mỗi điểm khác
-- Sắp xếp theo góc tăng dần (ngược chiều kim đồng hồ)
+2. Xây dựng nửa trên (upper hull):
+   - Duyệt ngược từ cuối về đầu
+   - Tương tự như nửa dưới
 
-Bước 3: Xây dựng bao lồi bằng stack
-- Duyệt qua các điểm theo thứ tự đã sắp
-- Với mỗi điểm mới:
-  * Kiểm tra xem nó rẽ trái hay phải so với 2 điểm cuối trong stack
-  * Nếu rẽ phải (không lồi) → loại điểm cuối khỏi stack
-  * Tiếp tục kiểm tra cho đến khi được rẽ trái
-  * Thêm điểm mới vào stack
+3. Kết hợp: hull = lower + upper
 
-Kiểm tra rẽ trái/phải bằng tích chéo (cross product):
-- Vector AB = (B.x - A.x, B.y - A.y)
-- Vector AC = (C.x - A.x, C.y - A.y)
-- Cross = AB.x × AC.y - AB.y × AC.x
-- Nếu cross > 0: C ở bên trái AB (rẽ trái)
-- Nếu cross < 0: C ở bên phải AB (rẽ phải)
+Kiểm tra rẽ: crossProduct(A, B, C)
+• cross = (B.x - A.x)×(C.y - A.y) - (B.y - A.y)×(C.x - A.x)
+• cross ≤ 0: rẽ phải (loại B)
+• cross > 0: rẽ trái (giữ B)
 
-Thuật toán 2: Diện tích bao lồi - Công thức dây giày (Shoelace Formula)
-- Tính diện tích đa giác khi biết toạ độ các đỉnh
-- Area = 1/2 |Σ(xᵢ × yᵢ₊₁ - xᵢ₊₁ × yᵢ)|
-- Hình dung: Cắt đa giác thành các tam giác từ gốc tọa độ
+---
 
-Thuật toán 3: Chu vi bao lồi
-- Tính tổng khoảng cách các cạnh liên tiếp
-- Perimeter = Σ √((xᵢ₊₁ - xᵢ)² + (yᵢ₊₁ - yᵢ)²)
+Thuật toán: Diện tích (Shoelace Formula)
 
-Thuật toán 4: Cặp điểm gần nhất - Chia để trị (Divide and Conquer)
-- Tìm 2 điểm có khoảng cách nhỏ nhất
+Input:
+• Đa giác hull = [p₀, p₁, ..., pₙ₋₁]
 
-Các bước:
+Công thức:
+• Area = ½ |Σᵢ₌₀ⁿ⁻¹ (xᵢ×yᵢ₊₁ - xᵢ₊₁×yᵢ)|
 
-Bước 1: Sắp xếp
-- Sắp theo x (px) và theo y (py)
+---
 
-Bước 2: Chia nhỏ (n ≤ 3 điểm)
-- Tính trực tiếp bằng brute force
+Thuật toán: Cặp điểm gần nhất (Divide & Conquer)
 
-Bước 3: Chia lớn (n > 3)
-- Chia tập điểm thành 2 nửa theo toạ độ x
-- Đệ quy tìm d₁ (khoảng cách nhỏ nhất bên trái)
-- Đệ quy tìm d₂ (khoảng cách nhỏ nhất bên phải)
-- d = min(d₁, d₂)
+Input:
+• Danh sách điểm đã sắp xếp theo x, y
 
-Bước 4: Trộn kết quả (strip check)
-- Vấn đề: Cặp gần nhất có thể nằm ngang ranh giới
-- Chỉ cần kiểm tra điểm trong dải strip rộng 2d quanh ranh giới
-- Kiểm tra mỗi điểm với 7 điểm kế tiếp (chứng minh toán học)
+Lặp:
+1. Nếu n ≤ 3: brute force
 
-Tối ưu hoá: Độ phức tạp O(n log n) thay vì O(n²) brute force
+2. Chia đôi:
+   - dₗ = closestPair(nửa trái)
+   - dᵣ = closestPair(nửa phải)
+   - d = min(dₗ, dᵣ)
 
-Ứng dụng:
-- Xử lý ảnh, nhận dạng mẫu
-- GIS, bản đồ
-- Thiết kế mạch, robotics
-- Phân cụm dữ liệu
+3. Kiểm tra strip (dải rộng 2d):
+   - Chỉ kiểm tra điểm trong strip
+   - Mỗi điểm so với 7 điểm kế
+   - Cập nhật d nếu tìm được nhỏ hơn
+
+4. Trả về d
